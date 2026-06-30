@@ -7,6 +7,9 @@
 ## Secure: 1
 ## LoadOnDemand: 0
 
+Locale\ruRU.lua
+Locale\enUS.lua
+
 LFG\LFDFrame.lua
 LFG\LFDFrame.xml
 LFG\LFGFrame.lua

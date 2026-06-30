@@ -60,13 +60,13 @@
 		</Scripts>
 	</Button>
 
-	<Button name="LFDParentFrameTab1" parent="LFDParentFrame" inherits="LFDParentFrameTabTemplate" id="1" text="Поиск подземелий">
+	<Button name="LFDParentFrameTab1" parent="LFDParentFrame" inherits="LFDParentFrameTabTemplate" id="1" text="EZTEXT_DUNGEON_FINDER">
 		<Anchors>
 			<Anchor point="BOTTOMLEFT" x="11" y="-28"/>
 		</Anchors>
 	</Button>
 
-	<Button name="LFDParentFrameTab2" parent="LFDParentFrame" inherits="LFDParentFrameTabTemplate" id="2" text="Поиск рейда">
+	<Button name="LFDParentFrameTab2" parent="LFDParentFrame" inherits="LFDParentFrameTabTemplate" id="2" text="EZTEXT_RAID_FINDER">
 		<Anchors>
 			<Anchor point="LEFT" relativeTo="LFDParentFrameTab1" relativePoint="RIGHT" x="-15" y="0"/>
 		</Anchors>
