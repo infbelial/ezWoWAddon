@@ -1,0 +1,12 @@
+## Interface: 30300
+## Title: ezWoW
+## Version: 1
+## Notes: Custom client features for ezWoW
+## Author: ezwow.org
+## DefaultState: Enabled
+## Secure: 1
+## LoadOnDemand: 0
+
+LFG\LFDFrame.lua
+LFG\LFDFrame.xml
+LFG\LFGFrame.lua

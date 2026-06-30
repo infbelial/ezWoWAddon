@@ -1,0 +1,295 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+
+	<Frame name="LFGDungeonReadyStatusPlayerTemplate" virtual="true">
+		<Size x="55" y="55"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="$parentTexture" file="Interface\LFGFrame\UI-LFG-ICON-ROLES" setAllPoints="true" parentKey="texture"/>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentStatusIcon"  file="Interface\RaidFrame\ReadyCheck-Waiting" parentKey="statusIcon">
+					<Size x="30" y="30"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="5" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+    
+	<Frame name="LFGDungeonReadyStatusRoleWithCountTemplate" inherits="LFGDungeonReadyStatusPlayerTemplate" virtual="true">
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentCount" inherits="GameFontHighlight" parentKey="count">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent" relativePoint="BOTTOM" x="0" y="-2"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+    <Frame name="LFDDungeonReadyStatusGrouped" parent="LFDDungeonReadyStatus">
+        <Size x="306" y="55"/>
+        <Anchors>
+            <Anchor point="LEFT" x="0" y="0"/>
+        </Anchors>
+        <Frames>
+            <Frame name="$parentTank" inherits="LFGDungeonReadyStatusRoleWithCountTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" x="49" y="0"/>
+                </Anchors>
+            </Frame>
+            <Frame name="$parentHealer" inherits="LFGDungeonReadyStatusRoleWithCountTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentTank" relativePoint="RIGHT" x="22" y="0"/>
+                </Anchors>
+            </Frame>
+            <Frame name="$parentDamager" inherits="LFGDungeonReadyStatusRoleWithCountTemplate">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentHealer" relativePoint="RIGHT" x="22" y="0"/>
+                </Anchors>
+            </Frame>
+        </Frames>
+    </Frame>
+
+	<Button name="LFDParentFrameTabTemplate" inherits="CharacterFrameTabButtonTemplate" virtual="true">
+		<Scripts>
+			<OnLoad function="LFDParentFrameTab_OnLoad"/>
+		 	<OnClick function="LFDParentFrameTab_OnClick"/>				
+		</Scripts>
+	</Button>
+
+	<Button name="LFDParentFrameTab1" parent="LFDParentFrame" inherits="LFDParentFrameTabTemplate" id="1" text="Поиск подземелий">
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" x="11" y="-28"/>
+		</Anchors>
+	</Button>
+
+	<Button name="LFDParentFrameTab2" parent="LFDParentFrame" inherits="LFDParentFrameTabTemplate" id="2" text="Поиск рейда">
+		<Anchors>
+			<Anchor point="LEFT" relativeTo="LFDParentFrameTab1" relativePoint="RIGHT" x="-15" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				LFDParentFrameTab_OnLoad(self)
+				PanelTemplates_SetNumTabs(self:GetParent(), 2)
+				PanelTemplates_SetTab(self:GetParent(), 1)
+			</OnLoad>
+		</Scripts>
+	</Button>
+
+	<Frame name="LFDQueueFrameRaid" parent="LFDQueueFrame" setAllPoints="true" hidden="true">
+		<!--Size x="298" y="253"/-->
+		<Frames>
+			<ScrollFrame name="$parentScrollFrame" inherits="UIPanelScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="298" y="253"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-34" y="30"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentScrollBackground">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="0" y="-5"/>
+									</Offset>
+								</Anchor>
+								<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="29" y="-2"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Color r="0" b="0" g="0" a=".55"/>
+						</Texture>
+					</Layer>
+					<Layer level="ARTWORK">
+						<Texture name="$parentScrollBackgroundTopLeft" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+							<Size>
+								<AbsDimension x="31" y="256"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="-2" y="5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.484375" top="0" bottom="1.0"/>
+						</Texture>
+						<Texture name="$parentScrollBackgroundBottomRight" file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+							<Size>
+								<AbsDimension x="31" y="106"/>
+							</Size>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="-2" y="-4"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						local myName = self:GetName();
+						_G[myName.."ScrollBackground"]:SetParent(_G[myName.."ScrollBar"]);
+						_G[myName.."ScrollBackgroundTopLeft"]:SetParent(_G[myName.."ScrollBar"]);
+						_G[myName.."ScrollBackgroundBottomRight"]:SetParent(_G[myName.."ScrollBar"]);
+						
+						_G[myName.."ScrollBar"]:SetPoint("BOTTOMLEFT", self, "BOTTOMRIGHT", 6, 14);
+						
+						self.scrollBarHideable = true;
+						ScrollFrame_OnLoad(self);
+					</OnLoad>
+				</Scripts>
+				<ScrollChild>
+					<Frame name="$parentChildFrame">
+						<Size>
+							<AbsDimension x="1" y="1"/>
+						</Size>
+						<Layers>
+							<Layer level="ARTWORK">
+								<FontString name="$parentTitle" inherits="QuestTitleFontBlackShadow" justifyH="LEFT" parentKey="title" text="LFG_TYPE_RANDOM_DUNGEON">
+									<Anchors>
+										<Anchor point="TOPLEFT" x="10" y="-15"/>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentDescription" inherits="QuestFont" justifyH="LEFT" parentKey="description" text="LFD_RANDOM_EXPLANATION">
+									<Size x="280" y="0"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentRewardsLabel" inherits="QuestTitleFontBlackShadow" justifyH="LEFT" parentKey="rewardsLabel" text="LFD_REWARDS">
+									<Anchors>
+										<Anchor point="TOPLEFT" relativeTo="$parentDescription" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentRewardsDescription" inherits="QuestFont" justifyH="LEFT" parentKey="rewardsDescription" text="LFD_RANDOM_REWARD_EXPLANATION1">
+									<Size x="280" y="0"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" relativeTo="$parentRewardsLabel" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentPUGDescription" inherits="QuestFont" justifyH="LEFT" parentKey="pugDescription" text="LFD_RANDOM_REWARD_PUG_EXPLANATION">
+									<Size x="280" y="0"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" relativeTo="$parentRewardsLabel" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentMoneyLabel" inherits="QuestFont" justifyH="LEFT" parentKey="moneyLabel" text="MONEY_COLON">
+									<Anchors>
+										<Anchor point="TOPLEFT" relativeTo="$parentPUGDescription" relativePoint="BOTTOMLEFT" x="20" y="-10"/>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentXPLabel" inherits="QuestFont" justifyH="LEFT" parentKey="xpLabel" text="EXPERIENCE_COLON">
+									<Anchors>
+										<Anchor point="TOPLEFT" relativeTo="$parentMoneyLabel" relativePoint="BOTTOMLEFT" x="0" y="-5"/>
+									</Anchors>
+								</FontString>
+								<FontString name="$parentXPAmount" inherits="NumberFontNormalLarge" justifyH="LEFT" parentKey="xpAmount">
+									<Anchors>
+										<Anchor point="LEFT" relativeTo="$parentXPLabel" relativePoint="RIGHT" x="10" y="0"/>
+									</Anchors>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Button name="$parentItem1" inherits="LFDRandomDungeonLootTemplate" id="1">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parentRewardsDescription" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+								</Anchors>
+							</Button>
+							<Frame name="$parentMoneyFrame" inherits="MoneyFrameTemplate" parentKey="moneyFrame">
+								<Anchors>
+									<Anchor point="LEFT" relativeTo="$parentMoneyLabel" relativePoint="RIGHT" x="10" y="0"/>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										SmallMoneyFrame_OnLoad(self);
+										MoneyFrame_SetType(self, "STATIC");
+									</OnLoad>
+								</Scripts>
+							</Frame>
+							<Frame name="$parentSpacer" parentKey="spacer">
+								<Size x="2" y="2"/>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativeTo="$parentXPLabel" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+						<Scripts>
+							<OnLoad>
+								local myName = self:GetName();
+								self.description:SetTextColor(1, 1, 1);
+								self.rewardsDescription:SetTextColor(1, 1, 1);
+								self.pugDescription:SetTextColor(1, 1, 1);
+								self.moneyLabel:SetTextColor(1, 1, 1);
+								self.xpLabel:SetTextColor(1, 1, 1);
+							</OnLoad>
+						</Scripts>
+					</Frame>
+				</ScrollChild>
+			</ScrollFrame>
+		</Frames>
+		<Scripts>
+			<OnShow function="LFDQueueFrameRaid_UpdateFrame"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="LFRSearchStatusPlayerTemplate" inherits="LFDSearchStatusPlayerTemplate" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentCount" parentKey="count" inherits="GameFontHighlight">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="$parent" relativePoint="BOTTOM" x="0" y="-2"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="$parentHealerLFR" parent="LFDSearchStatus" inherits="LFRSearchStatusPlayerTemplate">
+		<Anchors>
+			<Anchor point="TOP" y="-40"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self.texture:SetTexCoord(GetTexCoordsForRole("HEALER"));
+			</OnLoad>
+		</Scripts>
+	</Frame>
+
+	<Frame name="$parentTankLFR" parent="LFDSearchStatus" inherits="LFRSearchStatusPlayerTemplate">
+		<Anchors>
+			<Anchor point="RIGHT" relativeTo="$parentHealerLFR" relativePoint="LEFT" x="-5" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self.texture:SetTexCoord(GetTexCoordsForRole("TANK"));
+			</OnLoad>
+		</Scripts>
+	</Frame>
+
+	<Frame name="$parentDamageLFR" parent="LFDSearchStatus" inherits="LFRSearchStatusPlayerTemplate">
+		<Anchors>
+			<Anchor point="LEFT" relativeTo="$parentHealerLFR" relativePoint="RIGHT" x="5" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self.texture:SetTexCoord(GetTexCoordsForRole("DAMAGER"));
+			</OnLoad>
+		</Scripts>
+	</Frame>
+</Ui>
