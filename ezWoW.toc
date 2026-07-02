@@ -6,8 +6,6 @@
 ## DefaultState: Enabled
 ## Secure: 1
 ## LoadOnDemand: 0
-Libs\Ace3\LibStub\LibStub.lua
-Libs\Ace3\AceAddon-3.0\AceAddon-3.0.lua
 ezWoW.lua
 Locale\ruRU.lua
 Locale\enUS.lua
