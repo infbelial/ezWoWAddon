@@ -7,6 +7,8 @@
 ## Secure: 1
 ## LoadOnDemand: 0
 
+ezWoW.xml
+
 Locale\ruRU.lua
 Locale\enUS.lua
 

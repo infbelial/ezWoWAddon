@@ -62,7 +62,7 @@
 
 	<Button name="LFDParentFrameTab1" parent="LFDParentFrame" inherits="LFDParentFrameTabTemplate" id="1" text="EZTEXT_DUNGEON_FINDER">
 		<Anchors>
-			<Anchor point="BOTTOMLEFT" x="11" y="-28"/>
+			<Anchor point="BOTTOMLEFT" x="11" y="-27"/>
 		</Anchors>
 	</Button>
 

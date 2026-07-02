@@ -171,6 +171,69 @@ local function ShowLFR()
 	LFDQueueFrameRaid_UpdateFrame()
 end
 
+-- ELVUI START
+local E = nil
+
+local function SkinLFDRandomDungeonLoot(frame)
+	if frame.isSkinned then return end
+
+	local icon = _G[frame:GetName().."IconTexture"]
+	local nameFrame = _G[frame:GetName().."NameFrame"]
+	local count = _G[frame:GetName().."Count"]
+
+	frame:StripTextures()
+	frame:CreateBackdrop("Transparent")
+	frame.backdrop:SetOutside(icon)
+
+	icon:SetTexCoord(unpack(E.TexCoords))
+	icon:SetDrawLayer("BORDER")
+	icon:SetParent(frame.backdrop)
+
+	nameFrame:SetSize(118, 39)
+
+	count:SetParent(frame.backdrop)
+
+	frame.isSkinned = true
+end
+
+local function GetLFGDungeonRewardLinkFix(dungeonID, rewardIndex)
+	local _, link = GetLFGDungeonRewardLink(dungeonID, rewardIndex)
+
+	if not link then
+		E.ScanTooltip:SetOwner(UIParent, "ANCHOR_NONE")
+		E.ScanTooltip:SetLFGDungeonReward(dungeonID, rewardIndex)
+		_, link = E.ScanTooltip:GetItem()
+		E.ScanTooltip:Hide()
+	end
+
+	return link
+end
+
+local function FixElvUI(frame, dungeonID, i)
+	if not E then
+		E = LibStub("AceAddon-3.0"):GetAddon("ElvUI", true)
+		if not E then
+			return
+		end
+	end
+
+	SkinLFDRandomDungeonLoot(frame)
+	local name = _G[frame:GetName().."Name"]
+	local link = GetLFGDungeonRewardLinkFix(dungeonID, i)
+	if link then
+		local _, _, quality = GetItemInfo(link)
+		if quality then
+			local r, g, b = GetItemQualityColor(quality)
+			frame.backdrop:SetBackdropBorderColor(r, g, b)
+			name:SetTextColor(r, g, b)
+		end
+	else
+		frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		name:SetTextColor(1, 1, 1)
+	end
+end
+-- ELVUI END
+
 local NUM_LFR_RANDOM_REWARD_FRAMES = 0
 
 function LFDQueueFrameRaid_UpdateFrame()
@@ -219,7 +282,7 @@ function LFDQueueFrameRaid_UpdateFrame()
 		parentFrame.title:SetText(LFG_TYPE_RANDOM_DUNGEON);
 		parentFrame.description:SetText(LFD_RANDOM_EXPLANATION);
 	end
-		
+
 	for i=1, numRewards do
 		local frame = _G[parentName.."Item"..i];
 		if ( not frame ) then
@@ -231,6 +294,10 @@ function LFDQueueFrameRaid_UpdateFrame()
 			else
 				frame:SetPoint("TOPLEFT", parentName.."Item"..(i-2), "BOTTOMLEFT", 0, -5);
 			end
+		end
+
+		if ezWoWConfig.elvui then
+			FixElvUI(frame, dungeonID, i)
 		end
 
 		local name, texture, numItems = GetLFGDungeonRewardInfo(dungeonID, i);
