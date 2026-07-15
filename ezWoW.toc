@@ -6,9 +6,16 @@
 ## DefaultState: Enabled
 ## Secure: 1
 ## LoadOnDemand: 0
-ezWoW.lua
+## SavedVariables: ezWoWCache
 Locale\ruRU.lua
 Locale\enUS.lua
+API\Data.lua
+API\Messages.lua
+ezWoW.lua
+AccountOptions\AccountOptionsFrame.lua
+AccountOptions\AccountOptionsFrame.xml
+AccountOptions\AccountOptionsPanels.lua
+AccountOptions\AccountOptionsPanels.xml
 LFG\LFDFrame.lua
 LFG\LFDFrame.xml
 LFG\LFGFrame.lua

@@ -1,0 +1,852 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Script file="AccountOptionsPanels.lua"/>
+
+	<!-- Templates -->
+	
+	<CheckButton name="EzWoWAccountOptionsBaseCheckButtonTemplate" inherits="OptionsBaseCheckButtonTemplate" virtual="true">
+		<Scripts>
+			<OnClick function="EzWoWAccountOptionsBaseCheckButtonTemplate_OnClick"/>
+		</Scripts>
+	</CheckButton>
+
+	<CheckButton name="EzWoWOptionsCheckButton" virtual="true" inherits="EzWoWAccountOptionsBaseCheckButtonTemplate">
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT">
+							<Offset x="0" y="1"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</CheckButton>
+
+	<CheckButton name="EzWoWOptionsCheckButtonSmall" virtual="true" inherits="EzWoWAccountOptionsBaseCheckButtonTemplate">
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontHighlightSmall">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="0" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</CheckButton>
+
+	<Frame name="EzWoWAccountInfoTemplate" inherits="OptionsBoxTemplate" virtual="true">
+		<Size x="381" y="28"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentName" justifyH="LEFT" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="4" y="15"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentStatus" justifyH="LEFT" inherits="GameFontHighlight">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="10" y="-7"/>
+					</Anchors>
+				</FontString>
+				<!--FontString name="$parentEnd" justifyH="LEFT" inherits="GameFontHighlight">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="10" y="-22"/>
+					</Anchors>
+				</FontString-->
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Frame name="EzWoWRateControl" inherits="OptionsBoxTemplate" virtual="true">
+		<Size x="275" y="61"/>
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentText" inherits="GameFontNormal">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="10" y="-10"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
+				<Size x="200" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="10" y="-33"/>
+				</Anchors>
+				<Scripts>
+					<OnValueChanged function="EzWoWRateSlider_OnValueChanged"/>
+				</Scripts>
+			</Slider>
+			<EditBox name="$parentEdit" inherits="InputBoxTemplate">
+				<Size x="50" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSlider" relativePoint="TOPRIGHT" x="10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus(false)</OnLoad>
+					<OnEscapePressed>self:ClearFocus()</OnEscapePressed>
+					<OnEnterPressed>self:ClearFocus()</OnEnterPressed>
+					<OnTextChanged function="EzWoWRateSlider_OnTextChanged"/>
+					<OnEditFocusGained function="EzWoWRateSlider_OnEditFocusGained"/>
+					<OnEditFocusLost function="EzWoWRateSlider_OnEditFocusLost"/>
+				</Scripts>
+			</EditBox>
+			<Frame name="$parentDropDown" inherits="UIDropDownMenuTemplate" id="1">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="12" y="-3"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						UIDropDownMenu_SetWidth(self, 110)
+						UIDropDownMenu_Initialize(self, EzWoWRateDropDown_OnLoad)
+						UIDropDownMenu_SetSelectedID(self, 1)
+					</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWRateDropDown_OnLoad)
+						UIDropDownMenu_Refresh(self, 1, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<!-- Information -->
+	<Frame name="EzWoWAccountOptionsInformationPanel" parent="EzWoWAccountOptionsFramePanelContainer">
+		<Attributes>
+			<!-- This is not actually used, just to not be undefined when resetting to defaults -->
+			<Attribute name="category" type="string" value="INFO"/>
+		</Attributes>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" hidden="true"/>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="EzWoWAccountInfoChatMute" inherits="EzWoWAccountInfoTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="16" y ="-56"/>
+				</Anchors>
+				<Frames>
+					<Button text="Подробнее" inherits="UIPanelButtonTemplate">
+						<Size x="100" y="22"/>
+						<Anchors>
+							<Anchor point="RIGHT" x="-2"/>
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+			<Frame>
+				<Size x="381" y="280"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="16" y="-127"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="EzWoWSubscriptionsPanelTitle" justifyH="LEFT" inherits="GameFontNormalLarge">
+							<Anchors>
+								<Anchor point="TOPLEFT" y="16"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+				<Frame name="EzWoWAccountInfoPremium" inherits="EzWoWAccountInfoTemplate">
+					<Anchors>
+						<Anchor point="TOPLEFT" y ="-22"/>
+					</Anchors>
+				</Frame>
+				<Frame name="EzWoWAccountInfoEzPlus" inherits="EzWoWAccountInfoTemplate">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="EzWoWAccountInfoPremium" relativePoint="BOTTOMLEFT" y="-20"/>
+					</Anchors>
+				</Frame>
+				<Frame name="EzWoWAccountInfoMountsSub" inherits="EzWoWAccountInfoTemplate">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="EzWoWAccountInfoEzPlus" relativePoint="BOTTOMLEFT" y="-20"/>
+					</Anchors>
+				</Frame>
+				<Frame name="EzWoWAccountInfoTransmogSub" inherits="EzWoWAccountInfoTemplate">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="EzWoWAccountInfoMountsSub" relativePoint="BOTTOMLEFT" y="-20"/>
+					</Anchors>
+				</Frame>
+				<Frame name="EzWoWAccountInfoSkinsSub" inherits="EzWoWAccountInfoTemplate">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="EzWoWAccountInfoTransmogSub" relativePoint="BOTTOMLEFT" y="-20"/>
+					</Anchors>
+				</Frame>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnShow function="EzWoWAccountOptionsInformationPanel_OnShow"/>
+			<OnUpdate function="EzWoWAccountOptionsInformationPanel_UpdateUI"/>
+		</Scripts>
+	</Frame>
+
+	<!-- Loot -->
+	<Frame name="EzWoWAccountOptionsLootPanel" hidden="true" parent="EzWoWAccountOptionsFramePanelContainer">
+		<Attributes>
+			<Attribute name="category" type="string" value="LOOT"/>
+		</Attributes>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset x="16" y="-16"/>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
+					<Size x="0" y="32"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" y="-8"/>
+						<Anchor point="RIGHT" x="-32"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="EzWoWOptionLootPartial" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="16" y="-72"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "LOOT_PARTIAL", "LOOT")</OnLoad>
+					<OnClick function="EzWoWOptionLootPartial_OnClick"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionLootAoE" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionLootPartial" relativePoint="BOTTOMLEFT" y="-4" x="17"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "LOOT_AOE", "LOOT")</OnLoad>
+					<OnClick function="EzWoWOptionLootAoE_OnClick"/>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionLootAoERadius" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionLootAoE" relativePoint="BOTTOMLEFT" y="-4" x ="17"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "LOOT_AOE_RADIUS", "LOOT")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionLootAoEVisual" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionLootAoERadius" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "LOOT_AOE_VISUAL", "LOOT")</OnLoad>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+	</Frame>
+
+	<!-- Rates -->
+	<Frame name="EzWoWAccountOptionsRatesPanel" hidden="true" parent="EzWoWAccountOptionsFramePanelContainer">
+		<Attributes>
+			<Attribute name="category" type="string" value="RATES"/>
+		</Attributes>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="4" justifyH="LEFT" justifyV="TOP">
+					<Size>
+						<AbsDimension y="60" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-32" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="EzWoWRateXPKill" inherits="EzWoWRateControl">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="16" y ="-92"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWRateControl_OnLoad(self, "RATE_XP_KILL", "RATES")</OnLoad>
+				</Scripts>
+			</Frame>
+			<Frame name="EzWoWRateXPQuest" inherits="EzWoWRateControl">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWRateXPKill" relativePoint="BOTTOMLEFT" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWRateControl_OnLoad(self, "RATE_XP_QUEST", "RATES")</OnLoad>
+				</Scripts>
+			</Frame>
+			<Frame name="EzWoWRateReputation" inherits="EzWoWRateControl">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWRateXPQuest" relativePoint="BOTTOMLEFT" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWRateControl_OnLoad(self, "RATE_REPUTATION", "RATES")</OnLoad>
+				</Scripts>
+			</Frame>
+			<Frame name="EzWoWRateHonor" inherits="EzWoWRateControl">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWRateReputation" relativePoint="BOTTOMLEFT" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWRateControl_OnLoad(self, "RATE_HONOR", "RATES")</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<!-- Display -->
+	<Frame name="EzWoWAccountOptionsDisplayPanel" hidden="true" parent="EzWoWAccountOptionsFramePanelContainer">
+		<Attributes>
+			<Attribute name="category" type="string" value="DISPLAY"/>
+		</Attributes>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
+					<Size>
+						<AbsDimension y="32" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-32" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="EzWoWOptionBGRaceMode" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-92"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentLabel" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+									<Offset x="21" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>EzWoWBGRaceDropDown_OnLoad(self)</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWBGRaceDropDown_Init)
+						UIDropDownMenu_Refresh(self, false, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<CheckButton name="EzWoWOptionShowShopSkins" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionBGRaceMode" relativePoint="BOTTOMLEFT" x="16" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_SHOP_SKINS", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowSpecialShapeshift" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowShopSkins" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_SPECIAL_SHAPESHIFT", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowTransmog" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowSpecialShapeshift" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_TRANSMOG", "DISPLAY")</OnLoad>
+					<OnClick>
+					    EzWoWAccountOptionsBaseCheckButtonTemplate_OnClick(self)
+    					EzWoWAccountOptionsDisplayPanel_UpdateUI()
+					</OnClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowTransmogMixed" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowTransmog" relativePoint="BOTTOMLEFT" x="18" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_TRANSMOG_MIXED", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowSpecialMounts" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowTransmogMixed" relativePoint="BOTTOMLEFT" x="-18" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_SHECIAL_MOUNTS", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowScale" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowSpecialMounts" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_SCALE", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowNormalSkins" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowScale" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_NORMAL_SKINS", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowGuildItemNotification" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowNormalSkins" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_GUILD_ITEM", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowGuildBossNotification" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowGuildItemNotification" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_GUILD_BOSS", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowAutoQuests" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowGuildBossNotification" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_AUTO_QUESTS", "DISPLAY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+	</Frame>
+
+	<!-- Privacy -->
+	<Frame name="EzWoWAccountOptionsPrivacyPanel" hidden="true" parent="EzWoWAccountOptionsFramePanelContainer">
+		<Attributes>
+			<Attribute name="category" type="string" value="PRIVACY"/>
+		</Attributes>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
+					<Size>
+						<AbsDimension y="32" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-32" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="EzWoWOptionShowInGuild" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="16" y="-72"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_IN_GUILD", "PRIVACY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowInWho" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowInGuild" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_IN_WHO", "PRIVACY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowInFriends" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowInWho" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_IN_FRIENDS", "PRIVACY")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<Frame name="EzWoWOptionShowPrivateMessages" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowInFriends" relativePoint="BOTTOMLEFT" x="-16" y="-30"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentLabel" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+									<Offset x="21" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "SHOW_PRIVATE_MESSAGES", "PRIVACY", 110)</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWPrivacy_InitDropDown)
+						UIDropDownMenu_Refresh(self, false, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<Frame name="EzWoWOptionShowPartyInvites" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowPrivateMessages" relativePoint="BOTTOMLEFT" y="-18"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentLabel" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+									<Offset x="21" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "SHOW_PARTY_INVITES", "PRIVACY", 110)</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWPrivacy_InitDropDown)
+						UIDropDownMenu_Refresh(self, false, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<!-- Collections -->
+	<Frame name="EzWoWAccountOptionsCollectionsPanel" hidden="true" parent="EzWoWAccountOptionsFramePanelContainer">
+		<Attributes>
+			<Attribute name="category" type="string" value="COLLECTIONS"/>
+		</Attributes>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
+					<Size>
+						<AbsDimension y="32" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-32" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="EzWoWOptionMountCollection" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="16" y="-72"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SUB_MOUNTS", "COLLECTIONS")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionPetCollection" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionMountCollection" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SUB_PETS", "COLLECTIONS")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionTransmogCollection" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionPetCollection" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SUB_TRANSMOG", "COLLECTIONS")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionSkinsCollection" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionTransmogCollection" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SUB_SKINS", "COLLECTIONS")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionToysCollection" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionSkinsCollection" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SUB_TOYS", "COLLECTIONS")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionAccountWideMounts" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionToysCollection" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "ACCOUNTWIDE_MOUNTS", "COLLECTIONS")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionAccountWidePets" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionAccountWideMounts" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "ACCOUNTWIDE_PETS", "COLLECTIONS")</OnLoad>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+	</Frame>
+
+	<!-- Arena -->
+	<Frame name="EzWoWAccountOptionsArenaPanel" hidden="true" parent="EzWoWAccountOptionsFramePanelContainer">
+		<Attributes>
+			<Attribute name="category" type="string" value="ARENA"/>
+		</Attributes>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
+					<Size>
+						<AbsDimension y="32" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-32" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="EzWoWOptionArenaBrackets" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-92"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentLabel" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+									<Offset x="21" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_BRACKETS", "ARENA", 120)</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWOptionArenaBrackets_InitDropDown)
+						UIDropDownMenu_Refresh(self, false, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<Frame name="EzWoWOptionArenaAgainstGroups" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionArenaBrackets" relativePoint="BOTTOMLEFT" x="0" y="-20"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentLabel" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="21" y="0"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_AGAINST_GROUPS", "ARENA", 120)</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWOptionArenaPlayAgainstGroups_InitDropDown)
+						UIDropDownMenu_Refresh(self, false, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<Frame name="EzWoWOptionArenaAnnouncements" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" relativeTo="EzWoWOptionArenaAgainstGroups" relativePoint="BOTTOMLEFT" y="-20"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentLabel" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+									<Offset x="21" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_ANNOUNCMENTS", "ARENA", 120)</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWOptionArenaAnnouncements_InitDropDown)
+						UIDropDownMenu_Refresh(self, false, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<!-- System messages -->
+	<Frame name="EzWoWAccountOptionsSystemMessagesPanel" hidden="true" parent="EzWoWAccountOptionsFramePanelContainer">
+		<Attributes>
+			<Attribute name="category" type="string" value="SYS_MESSAGES"/>
+		</Attributes>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
+					<Size>
+						<AbsDimension y="32" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-32" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="EzWoWOptionShowChatWarnings" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="16" y="-72"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_CHAT_WARNINGS", "SYS_MESSAGES")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowChatMutes" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowChatWarnings" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_CHAT_MUTES", "SYS_MESSAGES")</OnLoad>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="EzWoWOptionShowBans" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionShowChatMutes" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "SHOW_BANS", "SYS_MESSAGES")</OnLoad>
+				</Scripts>
+			</CheckButton>
+		</Frames>
+	</Frame>
+</Ui>
