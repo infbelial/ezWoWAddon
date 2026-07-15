@@ -2,8 +2,6 @@
 ..\FrameXML\UI.xsd">
 	<!-- if you change something here you probably want to change the glue version too -->
 
-	<Script file="AccountOptionsFrame.lua"/>
-
 	<Frame name="EzWoWAccountOptionsFrame" inherits="OptionsFrameTemplate">
 		<Frames>
 			<Button name="$parentApply" inherits="UIPanelButtonTemplate" text="APPLY">
