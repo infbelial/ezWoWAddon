@@ -142,12 +142,12 @@
 					<Anchor point="TOPLEFT" x="16" y ="-56"/>
 				</Anchors>
 				<Frames>
-					<Button text="Подробнее" inherits="UIPanelButtonTemplate">
+					<!--Button text="Подробнее" inherits="UIPanelButtonTemplate">
 						<Size x="100" y="22"/>
 						<Anchors>
 							<Anchor point="RIGHT" x="-2"/>
 						</Anchors>
-					</Button>
+					</Button-->
 				</Frames>
 			</Frame>
 			<Frame>
