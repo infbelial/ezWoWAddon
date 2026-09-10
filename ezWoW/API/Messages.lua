@@ -3,6 +3,17 @@ function ezWoWAPI:SendMessage(msg)
     SendAddonMessage("ezWoW", msg, "WHISPER", GetUnitName("player"))
 end
 
+
+function ezWoWAPI:SendInit()
+    self:SendMessage(string.format('INIT:version=%d;memberId=%d;bgSeasonId=%d;lastMuteId=%d;lastBgGameId=%d;',
+        ezWoWCache.version or 0,
+        ezWoWCache.memberId or 0,
+        ezWoWCache.bgSeason and ezWoWCache.bgSeason.id or 0,
+        ezWoWCache.muteHistory and ezWoWCache.muteHistory.lastId or 0,
+        0
+    ))
+end
+
 -- Read digits and if 'term' is specified check for terminal symbol at the end of the number
 local function ReadNumber(view, term)
     local startpos, endpos = view.str:find("[-+]?%d*%.?%d+", view.startpos)

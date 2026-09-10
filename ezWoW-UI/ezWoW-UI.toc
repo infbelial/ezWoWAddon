@@ -1,0 +1,14 @@
+## Interface: 30300
+## Title: ezWoW-UI
+## Notes: Features from .i menu and other features specific to the our server (WARNING: incomplete functionality and possible bugs due to being in a development phase)
+## Notes-ruRU: Функционал из .i меню и прочее специфичное для нашего сервера (ПРЕДУПРЕЖДЕНИЕ: неполная функциональность и возможные баги ввиду того что аддон находится в стадии разработки)
+## Author: ezwow.org
+## Dependencies: ezWoW
+## X-Part-Of: ezWoW
+## DefaultState: disabled
+
+AccountOptions\AccountOptionsFrame.lua
+AccountOptions\AccountOptionsFrame.xml
+AccountOptions\AccountOptionsPanels.lua
+AccountOptions\AccountOptionsPanels.xml
+ezWoW-UI.lua

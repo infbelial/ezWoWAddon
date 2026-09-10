@@ -739,7 +739,7 @@
 					</OnShow>
 				</Scripts>
 			</Frame>
-			<Frame name="EzWoWOptionArenaAgainstGroups" inherits="UIDropDownMenuTemplate">
+			<!--Frame name="EzWoWOptionArenaAgainstGroups" inherits="UIDropDownMenuTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionArenaBrackets" relativePoint="BOTTOMLEFT" x="0" y="-20"/>
 				</Anchors>
@@ -759,10 +759,10 @@
 						UIDropDownMenu_Refresh(self, false, 1)
 					</OnShow>
 				</Scripts>
-			</Frame>
+			</Frame-->
 			<Frame name="EzWoWOptionArenaAnnouncements" inherits="UIDropDownMenuTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="0" relativeTo="EzWoWOptionArenaAgainstGroups" relativePoint="BOTTOMLEFT" y="-20"/>
+					<Anchor point="TOPLEFT" x="0" relativeTo="EzWoWOptionArenaBrackets" relativePoint="BOTTOMLEFT" y="-20"/>
 				</Anchors>
 				<Layers>
 					<Layer level="BACKGROUND">

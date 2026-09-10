@@ -86,7 +86,7 @@ function EzWoWAccountOptionsFrame_OnMouseDown(self)
     end
 end
 
-function EzWoWAccountOptionsFrame_OnAddonLoaded()
+function EzWoWAccountOptionsFrame_Init()
     local self = EzWoWAccountOptionsFrame
 
     local button = CreateFrame("Button", "GameMenuButtonAccountOptions", GameMenuFrame, "GameMenuButtonTemplate")
@@ -161,15 +161,25 @@ function EzWoWAccountOptionsFrame_RegisterDropDown(control, category)
     ezWoWAPI:CreateOption(control.optionKey, category)
 end
 
+local function SetOption(msg, option, value)
+    ezWoWAPI.options[option].value = value
+    if option:find("RATE_") == 1 then
+        return string.format("%s%s=%f;", msg, option, value)
+    else
+        return string.format("%s%s=%i;", msg, option, value)
+    end
+end
+
 function EzWoWAccountOptionsFrame_ApplyOptions(frame)
     -- option.clientValue is state of UI on the moment of opening, compare to it and not to option.value
-
+    -- server limits messages per second, so make everything into a singular message
+    local msg = "SET_OPT:"
     if frame.checkBoxes then
         for _, button in pairs(frame.checkBoxes) do
             local value = button:GetChecked() or 0
             if value ~= button.clientValue then
                 button.clientValue = value
-                ezWoWAPI:SetOption(button.optionKey, value)
+                msg = SetOption(msg, button.optionKey, value)
             end
         end
     end
@@ -179,7 +189,7 @@ function EzWoWAccountOptionsFrame_ApplyOptions(frame)
             local value = UIDropDownMenu_GetSelectedValue(dropDown)
             if value ~= dropDown.clientValue then
                 dropDown.clientValue = value
-                ezWoWAPI:SetOption(dropDown.optionKey, value)
+                msg = SetOption(msg, dropDown.optionKey, value)
             end
         end
     end
@@ -195,9 +205,13 @@ function EzWoWAccountOptionsFrame_ApplyOptions(frame)
             end
             if not IsSameRateValue(value, control.clientValue) then
                 control.clientValue = value
-                ezWoWAPI:SetOption(control.optionKey, value)
+                msg = SetOption(msg, control.optionKey, value)
             end
         end
+    end
+
+    if msg ~= "SET_OPT:" then
+        ezWoWAPI:SendMessage(msg)
     end
 end
 

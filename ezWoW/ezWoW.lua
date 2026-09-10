@@ -1,4 +1,5 @@
 local addon = CreateFrame("Frame", nil, UIParent)
+
 ezWoWConfig = 
 {
     elvui = false,
@@ -16,14 +17,10 @@ function EzWoW_OnEvent(self, event, ...)
                 end
             end
         end
-        ezWoWAPI:SendMessage(string.format("INIT:%d,%d,%d;", ezWoWCache.version or 0, ezWoWCache.memberId or 0, ezWoWCache.muteHistory.lastId or 0))
     elseif event == "ADDON_LOADED" then
         local name = ...
         if name == "ElvUI" then
             ezWoWConfig.elvui = true
-        elseif name == "ezWoW" then
-            ezWoWAPI:Init()
-            EzWoWAccountOptionsFrame_OnAddonLoaded()
         end
     elseif event == "CHAT_MSG_ADDON" then
         local prefix, message, channel, sender = ...
