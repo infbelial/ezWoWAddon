@@ -128,3 +128,15 @@ T.MENU_SYS_MESSAGES_SUB_TEXT        = "Do you want to display this messages in a
 T.OPT_SHOW_CHAT_WARNINGS            = "Warnings recieved by other players"
 T.OPT_SHOW_CHAT_MUTES               = "Mutes received by other players"
 T.OPT_SHOW_BANS                     = "Bans received by other players"
+
+-- Multispec
+T.MULTISPEC_POPUP_SAVE              = "Enter a name to save"
+T.MULTISPEC_POPUP_RESAVE            = "Saved specialization \"%s\" with current talents and symbols"
+T.MULTISPEC_POPUP_RENAME            = "Enter new name"
+T.MULTIPSEC_POPUP_REMOVE            = "Are you sure you want to remove saved specialization\"%s\"?"
+T.MULTISPEC_APPLY                   = "Apply"
+T.MULTISPEC_SAVE                    = "Save"
+T.MULTISPEC_RENAME                  = "Rename"
+T.MULTISPEC_REMOVE                  = "Remove"
+T.MULTISPEC_RESET_TALENTS           = "Reset talents"
+T.MULTISPEC_EMPTY                   = "Empty"

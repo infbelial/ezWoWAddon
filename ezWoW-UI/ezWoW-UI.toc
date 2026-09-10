@@ -11,4 +11,6 @@ AccountOptions\AccountOptionsFrame.lua
 AccountOptions\AccountOptionsFrame.xml
 AccountOptions\AccountOptionsPanels.lua
 AccountOptions\AccountOptionsPanels.xml
+Multispec\MultispecMenu.lua
+Multispec\MultispecMenu.xml
 ezWoW-UI.lua

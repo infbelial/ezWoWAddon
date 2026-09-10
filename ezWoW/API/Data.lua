@@ -60,11 +60,18 @@ function ezWoWAPI:CreateOption(optionKey, category)
     self.options[optionKey] = option
 end
 
-function ezWoWAPI:SetOption(option, value)
-    self.options[option].value = value
-    if option:find("RATE_") == 1 then
-        self:SendMessage(string.format("SET_OPT:%s=%f;", option, value))
-    else
-        self:SendMessage(string.format("SET_OPT:%s=%i;", option, value))
+function ezWoWAPI:HasPremium()
+    local endDate = self.subscriptions["PREMIUM"]
+    if endDate then
+        return time() < endDate
     end
+    return false
+end
+
+function ezWoWAPI:HasEzPlus()
+    local endDate = self.subscriptions["EZPLUS"]
+    if endDate then
+        return time() < endDate
+    end
+    return false
 end

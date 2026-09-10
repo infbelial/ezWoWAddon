@@ -21,6 +21,8 @@ function EzWoW_OnEvent(self, event, ...)
         local name = ...
         if name == "ElvUI" then
             ezWoWConfig.elvui = true
+        elseif name == "ezWoW" then
+            ezWoWAPI:Init()
         end
     elseif event == "CHAT_MSG_ADDON" then
         local prefix, message, channel, sender = ...

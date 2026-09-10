@@ -59,6 +59,15 @@ local function ReadKeyValue(view, term)
     return key, value
 end
 
+local function CallHandlers(dataKey, ...)
+    local handlers = ezWoWAPI.dataHandlers[dataKey]
+    if handlers then
+        for i = 1, #handlers do
+            handlers[i](...)
+        end
+    end
+end
+
 function ezWoWAPI:HandleInit(msg)
     local version   = ReadNumber(msg, ",")
     local acc       = ReadIdentifier(msg, ",")
@@ -153,6 +162,7 @@ function ezWoWAPI:HandleSubscriptions(msg)
         self.subscriptions[key] = tonumber(value);
     until msg.startpos >= msg.endpos
 
+    CallHandlers("SUBSCRIPTIONS")
     return true
 end
 

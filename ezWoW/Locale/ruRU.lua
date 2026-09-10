@@ -123,3 +123,15 @@ T.MENU_SYS_MESSAGES_SUB_TEXT        = "Хотите ли вы выводить �
 T.OPT_SHOW_CHAT_WARNINGS            = "Предупреждения выданные другим игрокам"
 T.OPT_SHOW_CHAT_MUTES               = "Блокировки чата других игроков"
 T.OPT_SHOW_BANS                     = "Блокировки учетных записей других игроков"
+
+-- Multispec
+T.MULTISPEC_POPUP_SAVE              = "Введите название для сохранения"
+T.MULTISPEC_POPUP_RESAVE            = "Сохраненная специализация \"%s\" будет перезаписана текущими талантами и символами"
+T.MULTISPEC_POPUP_RENAME            = "Введите новое название"
+T.MULTIPSEC_POPUP_REMOVE            = "Вы действительно хотите удалить сохраненную специализацию \"%s\"?"
+T.MULTISPEC_APPLY                   = "Применить"
+T.MULTISPEC_SAVE                    = "Сохранить"
+T.MULTISPEC_RENAME                  = "Переименовать"
+T.MULTISPEC_REMOVE                  = "Удалить"
+T.MULTISPEC_RESET_TALENTS           = "Сбросить таланты"
+T.MULTISPEC_EMPTY                   = "Пусто"
