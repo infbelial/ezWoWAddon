@@ -1,0 +1,83 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+
+	
+	<Button name="EzWoWLadderHistoryEntryTemplate" virtual="true">
+		<Size x="100" y="24"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString inherits="ChatFontNormal" parentKey="text" justifyH="LEFT" justifyV="CENTER">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="4"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Button>
+
+	<Frame name="EzWoWLadderHistoryTemplate" virtual="true">
+		<Frames>
+			<Frame name="$parentBackground" inherits="EzWoWInsetFrameTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="5" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="-5" y="8"/>
+				</Anchors>
+			</Frame>
+			<ScrollFrame name="$parentContent" parentKey="content" inherits="HybridScrollFrameTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentBackground" x="4" y="-8"/>
+					<Anchor point="BOTTOMRIGHT" relativeTo="$parentBackground" x="-26" y="4"/>
+				</Anchors>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-10"/>
+							<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="5" y="10"/>
+						</Anchors>
+					</Slider>
+				</Frames>
+			</ScrollFrame>
+		</Frames>
+	</Frame>
+
+	<Frame name="EzWoWLadderFrame" parent="UIParent" inherits="EzWoWPortraitFrameTemplate" enableMouse="true" hidden="true" toplevel="true" frameStrata="HIGH" movable="true" clampedToScreen="true">
+		<Attributes>
+			<Attribute name="UIPanelLayout-defined" type="boolean" value="true"/>
+			<Attribute name="UIPanelLayout-enabled" type="boolean" value="true"/>
+			<Attribute name="UIPanelLayout-area" type="string" value="left"/>
+			<Attribute name="UIPanelLayout-pushable" type="number" value="0"/>
+			<Attribute name="UIPanelLayout-whileDead" type="boolean" value="true"/>
+			<Attribute name="UIPanelLayout-width" type="number" value="655"/>
+			<Attribute name="UIPanelLayout-xoffset" type="number" value="15"/>
+			<Attribute name="UIPanelLayout-yoffset" type="number" value="-14"/>
+		</Attributes>
+		<Size x="625" y="606"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontWhite">
+					<Size x="100" y="20"/>
+					<Anchors>
+						<Anchor point="TOP"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentTab1" inherits="EzWoWMenuTabCutoff" text="Поля боя" id="1">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="11" y="2"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentTab2" inherits="EzWoWMenuTabCutoff" text="Арена" id="2">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT" x="-16" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad function="EzWoWLadderFrame_OnLoad"/>
+		</Scripts>
+	</Frame>
+</Ui>

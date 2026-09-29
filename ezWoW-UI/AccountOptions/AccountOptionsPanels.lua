@@ -44,7 +44,7 @@ local function UpdateStatus(self, name, text)
 end
 
 function EzWoWAccountOptionsInformationPanel_OnShow(self)
-    EzWoWAccountOptionsInformationPanelTitle:SetText(T.INFO_ACCOUNT:format(ezWoWAPI.account))
+    EzWoWAccountOptionsInformationPanelTitle:SetText(T.INFO_ACCOUNT:format(ezWoW.account))
     EzWoWSubscriptionsPanelTitle:SetText(T.INFO_SUBSCRIPTIONS)
 
     EzWoWAccountOptionsInformationPanel_UpdateUI(self, 0)
@@ -86,8 +86,8 @@ function EzWoWAccountOptionsInformationPanel_UpdateUI(self, elapsed)
     self.lastUpdate = now
 
     local muteStatus = T.INFO_NO_MUTE;
-    if ezWoWAPI.muteEnd > 0 then
-        local timeInSeconds = ezWoWAPI.muteEnd - now
+    if ezWoW.muteEnd > 0 then
+        local timeInSeconds = ezWoW.muteEnd - now
         local hours = math.floor(timeInSeconds / 3600)
         local minutes = math.floor((timeInSeconds % 3600) / 60)
         local seconds = timeInSeconds % 60
@@ -102,11 +102,11 @@ function EzWoWAccountOptionsInformationPanel_UpdateUI(self, elapsed)
 
     UpdateStatus(EzWoWAccountInfoChatMute, T.INFO_MUTE, muteStatus)
 
-    UpdateSubscriptionStatus(EzWoWAccountInfoPremium, T.INFO_PREMIUM, ezWoWAPI.subscriptions["PREMIUM"], now)
-    UpdateSubscriptionStatus(EzWoWAccountInfoEzPlus, T.INFO_EZPLUS, ezWoWAPI.subscriptions["EZPLUS"], now)
-    UpdateSubscriptionStatus(EzWoWAccountInfoMountsSub, T.INFO_SUB_PETS_MOUNTS_TOYS, ezWoWAPI.subscriptions["PETS_MOUNTS_TOYS"], now)
-    UpdateSubscriptionStatus(EzWoWAccountInfoTransmogSub, T.INFO_SUB_TRANSMOG, ezWoWAPI.subscriptions["TRANSMOG"], now)
-    UpdateSubscriptionStatus(EzWoWAccountInfoSkinsSub, T.INFO_SUB_SKINS, ezWoWAPI.subscriptions["SKINS"], now)
+    UpdateSubscriptionStatus(EzWoWAccountInfoPremium, T.INFO_PREMIUM, ezWoW.subscriptions["PREMIUM"], now)
+    UpdateSubscriptionStatus(EzWoWAccountInfoEzPlus, T.INFO_EZPLUS, ezWoW.subscriptions["EZPLUS"], now)
+    UpdateSubscriptionStatus(EzWoWAccountInfoMountsSub, T.INFO_SUB_PETS_MOUNTS_TOYS, ezWoW.subscriptions["PETS_MOUNTS_TOYS"], now)
+    UpdateSubscriptionStatus(EzWoWAccountInfoTransmogSub, T.INFO_SUB_TRANSMOG, ezWoW.subscriptions["TRANSMOG"], now)
+    UpdateSubscriptionStatus(EzWoWAccountInfoSkinsSub, T.INFO_SUB_SKINS, ezWoW.subscriptions["SKINS"], now)
 end
 
 
@@ -247,7 +247,7 @@ end
 
 
 function EzWoWRateControl_UpdateUI(self)
-    local option = ezWoWAPI.options[self.optionKey]
+    local option = ezWoW.options[self.optionKey]
 
     local value = tonumber(option.value)
 
@@ -401,11 +401,11 @@ end
 function EzWoWRatesSlider_InitRates(self)
     local key = self.optionKey
 
-    local min = ezWoWAPI.rates[key.."_MIN"] or 0.0
-    local max = ezWoWAPI.rates[key.."_MAX"] or 1.0
-    local premium = ezWoWAPI.rates[key.."_PREMIUM"] or 1.0
+    local min = ezWoW.rates[key.."_MIN"] or 0.0
+    local max = ezWoW.rates[key.."_MAX"] or 1.0
+    local premium = ezWoW.rates[key.."_PREMIUM"] or 1.0
 
-    local endTime = ezWoWAPI.subscriptions["PREMIUM"]
+    local endTime = ezWoW.subscriptions["PREMIUM"]
     local hasPremium = endTime and endTime > time()
 
     if hasPremium then

@@ -4,15 +4,9 @@
 	<Frame name="EzWoWAccountOptionsFrame" inherits="OptionsFrameTemplate">
 		<Frames>
 			<Button name="$parentApply" inherits="UIPanelButtonTemplate" text="APPLY">
-				<Size>
-					<AbsDimension x="96" y="22"/>
-				</Size>
+				<Size x="96" y="22"/>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT">
-						<Offset>
-							<AbsDimension x="-16" y="16"/>
-						</Offset>
-					</Anchor>
+					<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
 				</Anchors>
 				<Scripts>
 					<OnClick>
@@ -23,9 +17,7 @@
 				</Scripts>
 			</Button>
 			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="CANCEL">
-				<Size>
-					<AbsDimension x="96" y="22"/>
-				</Size>
+				<Size x="96" y="22"/>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" relativeTo="$parentApply" relativePoint="BOTTOMLEFT"/>
 				</Anchors>
@@ -34,9 +26,7 @@
 				</Scripts>
 			</Button>
 			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="OKAY">
-				<Size>
-					<AbsDimension x="96" y="22"/>
-				</Size>
+				<Size x="96" y="22"/>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" relativeTo="$parentCancel" relativePoint="BOTTOMLEFT"/>
 				</Anchors>
@@ -48,15 +38,9 @@
 				</Scripts>
 			</Button>
 			<Button name="$parentDefaults" inherits="UIPanelButtonGrayTemplate" text="DEFAULTS">
-				<Size>
-					<AbsDimension x="96" y="22"/>
-				</Size>
+				<Size x="96" y="22"/>
 				<Anchors>
-					<Anchor point="BOTTOMLEFT">
-						<Offset>
-							<AbsDimension x="16" y="16"/>
-						</Offset>
-					</Anchor>
+					<Anchor point="BOTTOMLEFT" x="16" y="16"/>
 				</Anchors>
 				<Scripts>
 					<OnClick>

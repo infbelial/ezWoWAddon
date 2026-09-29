@@ -36,20 +36,20 @@ function EzWoWAccountOptionsFrame_UpdateUI()
     local self = EzWoWAccountOptionsFrame
 
     for _, checkBox in pairs(self.checkBoxes) do
-        local option = ezWoWAPI.options[checkBox.optionKey]
+        local option = ezWoW.options[checkBox.optionKey]
         checkBox:SetChecked(option.value)
         checkBox.clientValue = tonumber(option.value)
     end
 
     for _, control in pairs(self.rateSliders) do
-        local option = ezWoWAPI.options[control.optionKey]
+        local option = ezWoW.options[control.optionKey]
         control.clientValue = tonumber(option.value)
 
         EzWoWRateControl_UpdateUI(control)
     end
 
     for _, dropDown in pairs(self.dropDowns) do
-        local value = tonumber(ezWoWAPI.options[dropDown.optionKey].value)
+        local value = tonumber(ezWoW.options[dropDown.optionKey].value)
         dropDown.clientValue = value
         UIDropDownMenu_SetSelectedValue(dropDown, value, false)
     end
@@ -137,7 +137,7 @@ function EzWoWAccountOptionsFrame_RegisterCheckBox(control, category)
         self.checkBoxes = {}
     end
     table.insert(self.checkBoxes, control)
-    ezWoWAPI:CreateOption(control.optionKey, category)
+    ezWoW:CreateOption(control.optionKey, category)
 end
 
 function EzWoWAccountOptionsFrame_RegisterRateSlider(control, category)
@@ -147,7 +147,7 @@ function EzWoWAccountOptionsFrame_RegisterRateSlider(control, category)
         self.rateSliders = {}
     end
     table.insert(self.rateSliders, control)
-    ezWoWAPI:CreateOption(control.optionKey, category)
+    ezWoW:CreateOption(control.optionKey, category)
 end
 
 function EzWoWAccountOptionsFrame_RegisterDropDown(control, category)
@@ -158,11 +158,11 @@ function EzWoWAccountOptionsFrame_RegisterDropDown(control, category)
     end
     table.insert(self.dropDowns, control)
 
-    ezWoWAPI:CreateOption(control.optionKey, category)
+    ezWoW:CreateOption(control.optionKey, category)
 end
 
 local function SetOption(msg, option, value)
-    ezWoWAPI.options[option].value = value
+    ezWoW.options[option].value = value
     if option:find("RATE_") == 1 then
         return string.format("%s%s=%f;", msg, option, value)
     else
@@ -211,14 +211,14 @@ function EzWoWAccountOptionsFrame_ApplyOptions(frame)
     end
 
     if msg ~= "SET_OPT:" then
-        ezWoWAPI:SendMessage(msg)
+        ezWoW:SendMessage(msg)
     end
 end
 
 
 local function ResetAll()
     local msg = "SET_OPT:"
-    for key, option in pairs(ezWoWAPI.options) do
+    for key, option in pairs(ezWoW.options) do
         if key:find("RATE_") == 1 then
             msg = string.format("%s%s=%f;", msg, key, option.defaultValue)
         else
@@ -226,14 +226,14 @@ local function ResetAll()
         end
         option.value = option.defaultValue
     end
-    ezWoWAPI:SendMessage(msg)
+    ezWoW:SendMessage(msg)
     EzWoWAccountOptionsFrame_UpdateUI()
 end
 
 local function ResetCrrentCategory()
     local category = EzWoWAccountOptionsFramePanelContainer.displayedPanel:GetAttribute("category")
     local msg = "SET_OPT:"
-    for key, option in pairs(ezWoWAPI.options) do
+    for key, option in pairs(ezWoW.options) do
         if option.category == category then
             if key:find("RATE_") == 1 then
                 msg = string.format("%s%s=%f;", msg, key, option.defaultValue)
@@ -243,7 +243,7 @@ local function ResetCrrentCategory()
             option.value = option.defaultValue
         end
     end
-    ezWoWAPI:SendMessage(msg)
+    ezWoW:SendMessage(msg)
     EzWoWAccountOptionsFrame_UpdateUI()
 end
 

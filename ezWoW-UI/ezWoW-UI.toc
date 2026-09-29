@@ -7,10 +7,18 @@
 ## X-Part-Of: ezWoW
 ## DefaultState: disabled
 
+SharedUIPanelTemplates.lua
+SharedUIPanelTemplates.xml
 AccountOptions\AccountOptionsFrame.lua
 AccountOptions\AccountOptionsFrame.xml
 AccountOptions\AccountOptionsPanels.lua
 AccountOptions\AccountOptionsPanels.xml
+Ladder\LadderFrame.lua
+Ladder\LadderFrame.xml
+Ladder\ArenaLadder.lua
+Ladder\ArenaLadder.xml
+Ladder\BattlegroundLadder.lua
+Ladder\BattlegroundLadder.xml
 Multispec\MultispecMenu.lua
 Multispec\MultispecMenu.xml
 ezWoW-UI.lua

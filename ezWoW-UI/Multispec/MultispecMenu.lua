@@ -13,7 +13,7 @@ local SPEC_MAX_NO_EZPLUS = 5
 local T = ezWoWText
 
 function EzWoWMultispecMenu_UpdateState()
-    if ezWoWAPI:HasPremium() then
+    if ezWoW:HasPremium() then
         multispecButton:Show()
     elseif multispecButton then
         multispecButton:Hide()
@@ -29,7 +29,7 @@ function EzWoWMultispecMenu_Init()
         -- TODO: elvui
     end
     EzWoWMultispecMenu_UpdateState()
-    ezWoWAPI:Register("SUBSCRIPTIONS", EzWoWMultispecMenu_UpdateState)
+    ezWoW:RegisterHandler("SUBSCRIPTIONS", EzWoWMultispecMenu_UpdateState)
 end
 
 function EzWoWMultispecMenu_ToggleContextMenu(self)
@@ -42,10 +42,10 @@ StaticPopupDialogs["EZWOW_MULTIPSEC_SAVE"] =
 	button1 = OKAY,
 	button2 = NO,
 	OnAccept = function(self)
-        ezWoWAPI:SendMessage(string.format("SPEC_SAVE:%d=%s;", self.data, _G[self:GetName().."EditBox"]:GetText()))
+        ezWoW:SendMessage(string.format("SPEC_SAVE:%d=%s;", self.data, _G[self:GetName().."EditBox"]:GetText()))
     end,
     EditBoxOnEnterPressed = function(self)
-        ezWoWAPI:SendMessage(string.format("SPEC_SAVE:%d=%s;", self:GetParent().data, self:GetText()))
+        ezWoW:SendMessage(string.format("SPEC_SAVE:%d=%s;", self:GetParent().data, self:GetText()))
         self:GetParent():Hide()
     end,
 	hideOnEscape = 1,
@@ -61,7 +61,7 @@ StaticPopupDialogs["EZWOW_MULTIPSEC_RESAVE"] =
 	button1 = OKAY,
 	button2 = NO,
 	OnAccept = function(self)
-        local spec = ezWoWAPI.premiumSpec[self.data]
+        local spec = ezWoW.premiumSpec[self.data]
         StaticPopup_Show("EZWOW_MULTIPSEC_SAVE", "", "", self.data)
         if spec then
             StaticPopup1EditBox:SetText(spec.name)
@@ -79,10 +79,10 @@ StaticPopupDialogs["EZWOW_MULTISPEC_RENAME"] =
 	button1 = OKAY,
 	button2 = NO,
 	OnAccept = function(self)
-        ezWoWAPI:SendMessage(string.format("SPEC_RENAME:%d=%s;", self.data, _G[self:GetName().."EditBox"]:GetText()))
+        ezWoW:SendMessage(string.format("SPEC_RENAME:%d=%s;", self.data, _G[self:GetName().."EditBox"]:GetText()))
     end,
     EditBoxOnEnterPressed = function(self)
-        ezWoWAPI:SendMessage(string.format("SPEC_RENAME:%d=%s;", self:GetParent().data, self:GetText()))
+        ezWoW:SendMessage(string.format("SPEC_RENAME:%d=%s;", self:GetParent().data, self:GetText()))
         self:GetParent():Hide()
     end,
 	hideOnEscape = 1,
@@ -99,7 +99,7 @@ StaticPopupDialogs["EZWOW_MULTISPEC_REMOVE"] =
 	button1 = OKAY,
 	button2 = NO,
 	OnAccept = function(self)
-        ezWoWAPI:SendMessage(string.format("SPEC_REMOVE:%d;", self.data))
+        ezWoW:SendMessage(string.format("SPEC_REMOVE:%d;", self.data))
     end,
 	hideOnEscape = 1,
 	timeout = 0,
@@ -114,7 +114,7 @@ function EzWoWMultispecDropDownMenu_Init()
         local info; 
 
         local specIndex = UIDROPDOWNMENU_MENU_VALUE
-        local spec = ezWoWAPI.premiumSpec[specIndex]
+        local spec = ezWoW.premiumSpec[specIndex]
         info = UIDropDownMenu_CreateInfo()
 
         if spec ~= nil then
@@ -133,7 +133,7 @@ function EzWoWMultispecDropDownMenu_Init()
         info.notCheckable = 1
         info.func = function()
             DropDownList1:Hide()
-            ezWoWAPI:SendMessage(string.format("SPEC_APPLY:%d;", specIndex))
+            ezWoW:SendMessage(string.format("SPEC_APPLY:%d;", specIndex))
         end
         if spec == nil then
             info.disabled = true
@@ -145,7 +145,7 @@ function EzWoWMultispecDropDownMenu_Init()
         info.notCheckable = 1
         info.func = function() 
             DropDownList1:Hide()
-            local spec = ezWoWAPI.premiumSpec[specIndex]
+            local spec = ezWoW.premiumSpec[specIndex]
             if spec then
                 StaticPopup_Show("EZWOW_MULTIPSEC_RESAVE", spec.name, "", specIndex)
             else
@@ -178,10 +178,10 @@ function EzWoWMultispecDropDownMenu_Init()
         end
         UIDropDownMenu_AddButton(info, 2)
     else
-        local ezPlusActive = ezWoWAPI:HasEzPlus()
+        local ezPlusActive = ezWoW:HasEzPlus()
         for i = 0, SPEC_MAX do
             local info = UIDropDownMenu_CreateInfo()
-            local spec = ezWoWAPI.premiumSpec[i]
+            local spec = ezWoW.premiumSpec[i]
             if spec ~= nil then
                 info.text = string.format("[%d] %s (%d/%d/%d)", i + 1, spec.name, spec.tabs[1], spec.tabs[2], spec.tabs[3]) 
             else
@@ -205,7 +205,7 @@ function EzWoWMultispecDropDownMenu_Init()
         info.text = T.MULTISPEC_RESET_TALENTS
         info.notCheckable = 1
         info.func = function(self)
-            ezWoWAPI:SendMessage("RESET_TALENTS;")
+            ezWoW:SendMessage("RESET_TALENTS;")
         end
         UIDropDownMenu_AddButton(info, 1)
 

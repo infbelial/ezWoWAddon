@@ -1,5 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
     <Button name="EzWoWPremiumSpecButton" virtual="true">
 		<Size x="32" y="32"/>
 		<Layers>
@@ -17,9 +16,7 @@
         <Anchors>
             <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="32"/>
         </Anchors>
-        <NormalTexture name="$parentNormalTexture" file="Interface\Icons\Spell_ChargePositive">
-	        <Size x="32" y="32"/>
-		</NormalTexture>
+        <NormalTexture name="$parentNormalTexture" file="Interface\Icons\Spell_ChargePositive"/>
         <HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD"/>
 		<Scripts>
 			<OnClick function="EzWoWMultispecMenu_ToggleContextMenu"/>

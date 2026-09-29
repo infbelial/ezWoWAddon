@@ -1,41 +1,40 @@
-ezWoWAPI = 
+ezWoW = 
 {
     account = "",
+    memberId = 0,
     options = {},
     rates = {},
     subscriptions = {},
     muteId = 0,
     muteEnd = 0,
-    muteHistory = nil, -- { entries = list, lastId = number }
     premiumSpec = {},
-    log =
-    {
-        Debug = function(self, msg, ...)
-            if self.enableDebug then
-                print("[DEBUG]: ", msg, ...)
-            end
-        end,
-        Messages = function(self, source, msg)
-            if self.enableMessages then
-                print(string.format("[%s]: %s", source, msg))
-            end
-        end
-    },
+    dataHandlers = {},
+    eventHandlers = {},
 }
 
-function ezWoWAPI:Init()
-    -- ezWoWCache = nil
+local function AppendData(array, data)
+    for i = 1, #data do
+        array[#array + 1] = data[i]
+    end
+end
+
+function ezWoW:Init()
+    ezWoWCache = nil
     if ezWoWCache == nil then
         ezWoWCache = {}
-        ezWoWCache.version = version
-        ezWoWCache.memberId = 0
-        ezWoWCache.muteHistory = { entries = nil, lastId = 0 }
+        ezWoWCache.version = 0
+    end
+
+    ezWoWCharCache = nil
+    if ezWoWCharCache == nil then
+        ezWoWCharCache = {}
+        ezWoWCharCache.version = 0
     end
 
     self.muteHistory = ezWoWCache.muteHistory
-
-    self.log.enableDebug       = false
-    self.log.enableMessages    = false
+    self.bgSeason = ezWoWCache.bgSeason
+    self.bgHistory = ezWoWCharCache.bgHistory
+    self.arenaHistory = ezWoWCharCache.arenaHistory
 
     self.rates["RATE_XP_KILL_MIN"] = 0.0
     self.rates["RATE_XP_KILL_MAX"] = 1.0
@@ -49,9 +48,49 @@ function ezWoWAPI:Init()
     self.rates["RATE_HONOR_MIN"] = 0.0
     self.rates["RATE_HONOR_MAX"] = 1.0
     self.rates["RATE_HONOR_PREMIUM"] = 1.0
+
+    self:RegisterHandler("BG_SEASON_INFO", function(data)
+        ezWoWCache.bgSeason = data
+        self.bgSeason = data
+    end)
+
+    self:RegisterHandler("BG_LADDER_INFO", function(data)
+        self.bgLadderInfo = data
+    end)
+
+    self:RegisterHandler("BG_HISTORY", function(data, append)
+        if append then
+            AppendData(self.bgHistory, data)
+        else
+            ezWoWCharCache.bgHistory = data
+            self.bgHistory = data
+        end
+    end)
+
+    self:RegisterHandler("ARENA_SEASON_INFO", function(data)
+        ezWoWCache.arenaSeason = data
+        self.arenaSeason = data
+    end)
+
+    self:RegisterHandler("ARENA_LADDER_INFO", function(data)
+        self.arenaInfo = data
+    end)
+
+    self:RegisterHandler("ARENA_HISTORY", function(data, append)
+        if append then
+            AppendData(self.arenaHistory, data)
+        else
+            ezWoWCharCache.arenaHistory = data
+            self.arenaHistory = data
+        end
+    end)
+
+    self:RegisterHandler("CONFIG", function(data)
+        self.serverConfig = data
+    end)
 end
 
-function ezWoWAPI:CreateOption(optionKey, category)
+function ezWoW:CreateOption(optionKey, category)
     local option = {}
     option.value = 0            -- actual value from the server
     option.defaultValue = 0     -- default value
@@ -60,7 +99,7 @@ function ezWoWAPI:CreateOption(optionKey, category)
     self.options[optionKey] = option
 end
 
-function ezWoWAPI:HasPremium()
+function ezWoW:HasPremium()
     local endDate = self.subscriptions["PREMIUM"]
     if endDate then
         return time() < endDate
@@ -68,10 +107,42 @@ function ezWoWAPI:HasPremium()
     return false
 end
 
-function ezWoWAPI:HasEzPlus()
+function ezWoW:HasEzPlus()
     local endDate = self.subscriptions["EZPLUS"]
     if endDate then
         return time() < endDate
     end
     return false
+end
+
+function ezWoW:RegisterHandler(event, handler)
+    local handlers = self.eventHandlers[event]
+    if handlers == nil then
+        handlers = {}
+        self.eventHandlers[event] = handlers
+    end
+    handlers[#handlers + 1] = handler
+end
+
+function ezWoW:UnregisterHandler(event, handler)
+    local handlers = self.eventHandlers[event]
+    if handlers ~= nil then
+        for i = 1, #handlers do
+            if handlers[i] == handler then
+                table.remove(handlers, i)
+                return
+            end
+        end
+    end
+end
+
+function ezWoW:CallHandlers(event, ...)
+    self.event = event
+    local handlers = self.eventHandlers[event]
+    if handlers ~= nil then
+        for i = 1, #handlers do
+            handlers[i](...)
+        end
+    end
+    self.event = nil
 end

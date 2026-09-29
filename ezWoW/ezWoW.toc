@@ -7,6 +7,7 @@
 ## Secure: 1
 ## LoadOnDemand: 0
 ## SavedVariables: ezWoWCache
+## SavedVariablesPerCharacter: ezWoWCharCache
 Locale\ruRU.lua
 Locale\enUS.lua
 API\Data.lua

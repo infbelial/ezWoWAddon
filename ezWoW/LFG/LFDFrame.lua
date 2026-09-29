@@ -234,7 +234,7 @@ local function FixElvUI(frame, dungeonID, i)
 end
 -- ELVUI END
 
-local NUM_LFR_RANDOM_REWARD_FRAMES = 0
+local NUM_LFR_RANDOM_REWARD_FRAMES = 1
 
 function LFDQueueFrameRaid_UpdateFrame()
 	local parentName = "LFDQueueFrameRaidScrollFrameChildFrame"

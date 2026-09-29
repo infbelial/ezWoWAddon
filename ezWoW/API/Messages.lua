@@ -1,17 +1,6 @@
-function ezWoWAPI:SendMessage(msg)
-    self.log:Messages("SEND", msg)
+function ezWoW:SendMessage(msg)
+    ezLog:Messages("SEND", msg)
     SendAddonMessage("ezWoW", msg, "WHISPER", GetUnitName("player"))
-end
-
-
-function ezWoWAPI:SendInit()
-    self:SendMessage(string.format('INIT:version=%d;memberId=%d;bgSeasonId=%d;lastMuteId=%d;lastBgGameId=%d;',
-        ezWoWCache.version or 0,
-        ezWoWCache.memberId or 0,
-        ezWoWCache.bgSeason and ezWoWCache.bgSeason.id or 0,
-        ezWoWCache.muteHistory and ezWoWCache.muteHistory.lastId or 0,
-        0
-    ))
 end
 
 -- Read digits and if 'term' is specified check for terminal symbol at the end of the number
@@ -59,17 +48,13 @@ local function ReadKeyValue(view, term)
     return key, value
 end
 
-local function CallHandlers(dataKey, ...)
-    local handlers = ezWoWAPI.dataHandlers[dataKey]
-    if handlers then
-        for i = 1, #handlers do
-            handlers[i](...)
-        end
-    end
+function EzWoW_OnDataReceived(key, data, append)
+    ezLog:Messages("DATA", key)
+    ezWoW:CallHandlers(key, data, append)
 end
 
-function ezWoWAPI:HandleInit(msg)
-    local version   = ReadNumber(msg, ",")
+function ezWoW:HandleInit(msg)
+    local version   = ReadIdentifier(msg, ",")
     local acc       = ReadIdentifier(msg, ",")
     local memberId  = ReadNumber(msg, ";")
 
@@ -77,14 +62,23 @@ function ezWoWAPI:HandleInit(msg)
         return false
     end
 
-    -- This is just for the client, server controls everything that's needed
+    if ezWoWCache.version ~= version then
+        ezWoWCache = {}
+        ezWoWCharCache.version = version
+    end
+    if ezWoWCharCache.version ~= version then
+        ezWoWCharCache = {}
+        ezWoWCharCache.version = version
+    end
+
     self.account = acc
-    ezWoWCache.version = version
-    ezWoWCache.memberId = memberId
+    self.memberId = memberId
+
+    self:CallHandlers("INIT")
     return true
 end
 
-function ezWoWAPI:HandleMuteUpdate(msg)
+function ezWoW:HandleMuteUpdate(msg)
     local id    = ReadNumber(msg, ",")
     local time  = ReadNumber(msg, ";")
     if not id or mute then
@@ -96,25 +90,13 @@ function ezWoWAPI:HandleMuteUpdate(msg)
     return true
 end
 
-function ezWoWAPI:HandleMuteHistory(msg)
-    local last = ReadNumber(msg, ";")
-    if last == nil then
-        return false
-    end
-
-    self.muteHistory.entries = C_ezAPI.getBucketData("MUTE_HISTORY")
-    self.muteHistory.lastId = last;
-    return true
-end
-
-
-function ezWoWAPI:HandleOptions(msg)
+function ezWoW:HandleOptions(msg)
     repeat
         local key, value = ReadKeyValue(msg, ";")
         if not key or not value then
             return false
         end
-        -- self.Log:Debug("HandleOptions: "..key..":"..value)
+        -- ezLog:Debug("HandleOptions: "..key..":"..value)
         local option = self.options[key]
         if option then
             option.value = value;
@@ -124,13 +106,13 @@ function ezWoWAPI:HandleOptions(msg)
     return true
 end
 
-function ezWoWAPI:HandleDefaultOptions(msg)
+function ezWoW:HandleDefaultOptions(msg)
     repeat
         local key, value = ReadKeyValue(msg, ";")
         if not key or not value then
             return false
         end
-        -- self.Log:Debug("HandleDefaultOptions: "..key..":"..value)
+        -- ezLog:Debug("HandleDefaultOptions: "..key..":"..value)
         local option = self.options[key]
         if option then
             option.defaultValue = value;
@@ -139,53 +121,45 @@ function ezWoWAPI:HandleDefaultOptions(msg)
     return true
 end
 
-function ezWoWAPI:HandleRates(msg)
+function ezWoW:HandleRates(msg)
     repeat
         local key, value = ReadKeyValue(msg, ";")
         if not key then
             return false
         end
-        -- self.Log:Debug("HandleRates: "..key..":"..value)
+        -- ezLog:Debug("HandleRates: "..key..":"..value)
         self.rates[key] = tonumber(value);
     until msg.startpos >= msg.endpos
 
     return true
 end
 
-function ezWoWAPI:HandleSubscriptions(msg)
+function ezWoW:HandleSubscriptions(msg)
     repeat
         local key, value = ReadKeyValue(msg, ";")
         if not key then
             return false
         end
-        -- self.Log:Debug("HandleSubscriptions: "..key..":"..value)
+        -- ezLog:Debug("HandleSubscriptions: "..key..":"..value)
         self.subscriptions[key] = tonumber(value);
     until msg.startpos >= msg.endpos
 
-    CallHandlers("SUBSCRIPTIONS")
+    self:CallHandlers("SUBSCRIPTIONS")
     return true
 end
-
-function ezWoWAPI:HandlePremiumSpec(msg)
-    self.premiumSpec = C_ezAPI.getBucketData("PREMIUM_SPEC")
-    return true
-end
-
 
 local handlers =
 {
-    ["INIT"]            = ezWoWAPI.HandleInit,
-    ["MUTE_UPDATE"]     = ezWoWAPI.HandleMuteUpdate,
-    ["MUTE_HISTORY"]    = ezWoWAPI.HandleMuteHistory,
-    ["SET_OPT"]         = ezWoWAPI.HandleOptions,
-    ["SET_OPT_DEF"]     = ezWoWAPI.HandleDefaultOptions,
-    ["SET_RATE"]        = ezWoWAPI.HandleRates,
-    ["SET_SUB"]         = ezWoWAPI.HandleSubscriptions,
-    ["PREMIUM_SPEC"]    = ezWoWAPI.HandlePremiumSpec,
+    ["INIT"]            = ezWoW.HandleInit,
+    ["MUTE_UPDATE"]     = ezWoW.HandleMuteUpdate,
+    ["SET_OPT"]         = ezWoW.HandleOptions,
+    ["SET_OPT_DEF"]     = ezWoW.HandleDefaultOptions,
+    ["SET_RATE"]        = ezWoW.HandleRates,
+    ["SET_SUB"]         = ezWoW.HandleSubscriptions,
 }
 
-function ezWoWAPI:HandleMessage(message)
-    self.log:Messages("RECV", message)
+function ezWoW:HandleMessage(message)
+    ezLog:Messages("RECV", message)
 
     local handled = false
 
@@ -206,6 +180,6 @@ function ezWoWAPI:HandleMessage(message)
     end
     
     if not handled then
-        self.log:Debug("Unhandled message: ", message)
+        ezLog:Debug("Unhandled message: ", message)
     end
 end

@@ -1,0 +1,413 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+    
+    <Frame name="EzWoWArenaLadderRowTemplate" virtual="true">
+		<Size x="100" y="24"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<!-- stats, from right to left -->
+				<FontString name="$parentWinRate" parentKey="playerWinRate" inherits="GameFontWhite">
+					<Size x="42" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" x="-4"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentWinsLosses" parentKey="playerWinsLosses" inherits="GameFontWhite">
+					<Size x="60" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="$parentWinRate" relativePoint="LEFT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentMatchMakerRating" parentKey="playerMatchMakerRating" inherits="GameFontWhite">
+					<Size x="50" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="$parentWinsLosses" relativePoint="LEFT"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentRating" parentKey="playerRating" inherits="GameFontWhite">
+					<Size x="50" y="20"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativeTo="$parentMatchMakerRating" relativePoint="LEFT"/>
+					</Anchors>
+				</FontString>
+				<!-- character info, from left to right-->
+				<FontString name="$parentRank" parentKey="playerRank" justifyH="CENTER" inherits="GameFontWhite">
+					<Anchors>
+						<Anchor point="LEFT"/>
+					</Anchors>
+				</FontString>
+				<Texture name="$parentFaction" parentKey="playerFaction" file="Interface\GLUES\CHARACTERCREATE\UI-CharacterCreate-Factions">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentRank" relativePoint="RIGHT"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentRace" parentKey="playerRace" file="Interface\GLUES\CHARACTERCREATE\UI-CharacterCreate-Races">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentFaction" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords left="0.0" right="0.125" top="0.0" bottom="0.25"/>
+				</Texture>
+				<Texture name="$parentClass" parentKey="playerClass" file="Interface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentRace" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords top="0.0" bottom="0.25" left="0.0" right="0.25"/>
+				</Texture>
+				<FontString name="$parentName" parentKey="playerName" inherits="GameFontWhite">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentClass" relativePoint="RIGHT" x="4"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="BACKGROUND">
+			   	<Texture parentKey="background" file="Interface\AddOns\ezWoW\Textures\ListButtons">
+				   	<TexCoords left="0.00390625" right="0.8203125" top="0.00390625" bottom="0.18359375"/>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+    <Frame name="EzWoWArenaLadderPanel" parent="EzWoWLadderFrame" setAllPoints="true" hidden="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString inherits="GameFontNormalSmall" parentKey="seasonEnd" justifyH="RIGHT">
+					<Anchors>
+						<Anchor point="TOPRIGHT" y="-30" x="-12"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentTab1" inherits="TabButtonTemplate" text="Ладдер" id="1" frameLevel="5" parentArray="Tabs">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="58" y="-28"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad function="EzWoWLadderInnerTab_OnLoad"/>
+					<OnClick function="EzWoWArenaLadderTab_OnClick"/>
+				</Scripts>
+			</Button>
+			<Button name="$parentTab2" inherits="TabButtonTemplate" text="История" id="2" frameLevel="5" parentArray="Tabs">
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad function="EzWoWLadderInnerTab_OnLoad"/>
+					<OnClick function="EzWoWArenaLadderTab_OnClick"/>
+				</Scripts>
+			</Button>
+            
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				self.numTabs = 2
+				PanelTemplates_SetTab(self, 1)
+			</OnLoad>
+			<OnShow function="EzWoWArenaLadderPanel_OnShow"/>
+		</Scripts>
+	</Frame>
+
+    <Frame name="EzWoWArenaLadder" parent="EzWoWArenaLadderPanel">
+        <Anchors>
+			<Anchor point="TOPLEFT" y="-35"/>
+			<Anchor point="TOPRIGHT" y="-35"/>
+			<Anchor point="BOTTOMLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
+		</Anchors>
+        <Frames>
+            <Frame name="$parentTableHeader">
+				<Size x="300" y="54"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="8" y="-25"/>
+					<Anchor point="TOPRIGHT" x="-8" y="-25"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentBg" file="Interface\AddOns\ezModeration\Textures\UI-Background-Marble" horizTile="true" vertTile="true">
+							<Anchors>
+								<Anchor point="TOPLEFT"/>
+								<Anchor point="BOTTOMRIGHT"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER">
+						<Texture name="$parentInsetTopLeftCorner" inherits="EzWoW-UI-Frame-InnerTopLeft">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentBg"/>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentInsetTopRightCorner" inherits="EzWoW-UI-Frame-InnerTopRight">
+							<Anchors>
+								<Anchor point="TOPRIGHT" relativeTo="$parentBg"/>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentInsetTopBorder" inherits="EzWoW-UI-Frame-InnerTopTile">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentInsetTopLeftCorner" relativePoint="TOPRIGHT"/>
+								<Anchor point="TOPRIGHT" relativeTo="$parentInsetTopRightCorner" relativePoint="TOPLEFT"/>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentInsetLeftBorder" inherits="EzWoW-UI-Frame-InnerLeftTile">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="$parentInsetTopLeftCorner" relativePoint="BOTTOMLEFT" x="0" y="0" />
+							</Anchors>
+						</Texture>
+						<Texture name="$parentInsetRightBorder" inherits="EzWoW-UI-Frame-InnerRightTile">
+							<Anchors>
+								<Anchor point="TOPRIGHT" relativeTo="$parentInsetTopRightCorner" relativePoint="BOTTOMRIGHT"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="ARTWORK">
+						<FontString name="$parentWinsLosses" inherits="GameFontWhiteSmall">
+							<Size x="102" y="30"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="-4"/>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentMatchMakerRating" inherits="GameFontWhiteSmall" text="MMR">
+							<Size x="50" y="30"/>
+							<Anchors>
+								<Anchor point="RIGHT" relativeTo="$parentWinsLosses" relativePoint="LEFT"/>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentRating" inherits="GameFontWhiteSmall" text="Рейтинг">
+							<Size x="50" y="30"/>
+							<Anchors>
+								<Anchor point="RIGHT" relativeTo="$parentMatchMakerRating" relativePoint="LEFT"/>
+							</Anchors>
+						</FontString>
+						<!-- -->
+						<FontString name="$parentRank" parentKey="rank" inherits="GameFontWhite" text="#">
+							<Size x="20" y="30"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="4"/>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentCharacter" inherits="GameFontWhite" text="Персонаж">
+							<Size x="100" y="30"/>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentRank" relativePoint="RIGHT" x="4"/>
+								<Anchor point="RIGHT" relativeTo="$parentRating" relativePoint="LEFT" x="-4"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame name="EzWoWArenaLadderCharacterRow" inherits="EzWoWArenaLadderRowTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="4" y="-30"/>
+							<Anchor point="TOPRIGHT" x="-4"/>
+						</Anchors>
+					</Frame>
+				</Frames>
+			</Frame>
+			<Frame name="$parentTable" inherits="EzWoWInsetFrameTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentTableHeader" relativePoint="BOTTOMLEFT" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="-8" y="36"/>
+				</Anchors>
+				<Frames>
+					<ScrollFrame name="$parentRows" parentKey="content" inherits="HybridScrollFrameTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="4" y="-4"/>
+							<Anchor point="BOTTOMRIGHT" x="-26" y="4"/>
+						</Anchors>
+						<Frames>
+							<Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="1" y="-18"/>
+									<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="1" y="12"/>
+								</Anchors>
+							</Slider>
+						</Frames>
+						<Scripts>
+							<OnShow function="EzWoWArenaLadderTable_Update"/>
+							<OnLoad function="EzWoWArenaLadderTable_OnLoad"/>
+						</Scripts>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+			<Button name="$parentLast" parentKey="buttonLast" inherits="UIPanelButtonTemplate">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="2"/>
+				</Anchors>
+				<NormalTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Up"/>
+				<PushedTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Down"/>
+				<DisabledTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>EzWoWLadder_OpenPage(self:GetParent(), self:GetParent().totalPages)</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentNext" parentKey="buttonNext">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentLast" relativePoint="LEFT"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick function="EzWoWLadderButtonNext_OnClick"/>
+				</Scripts>
+			</Button>
+			<EditBox name="$parentPageNum" parentKey="pageNum">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentNext" relativePoint="LEFT"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+							<Size x="8" y="22"/>
+							<Anchors>
+								<Anchor point="LEFT" x="-5" y="0"/>
+							</Anchors>
+							<TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+							<Size x="8" y="22"/>
+							<Anchors>
+								<Anchor point="RIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+							<Size x="10" y="22"/>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+								<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<FontString inherits="ChatFontNormal"/>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus(false)</OnLoad>
+					<OnEditFocusLost function="EzWoWLadderPageNum_OnFocusLost"/>
+					<OnEscapePressed function="EzWoWLadderPageNum_OnEscapePressed"/>
+					<OnEnterPressed function="EzWoWLadderPageNum_OnEnterPressed"/>
+				</Scripts>
+			</EditBox>
+			<Button name="$parentPrev" parentKey="buttonPrev">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentPageNum" relativePoint="LEFT" x="-4"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick function="EzWoWLadderButtonPrev_OnClick"/>
+				</Scripts>
+			</Button>
+			<Button name="$parentFirst" parentKey="buttonFirst" inherits="UIPanelButtonTemplate" text="1">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentPrev" relativePoint="LEFT"/>
+				</Anchors>			
+				<NormalTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Up"/>
+				<PushedTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Down"/>
+				<DisabledTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>EzWoWArenaLadder_OpenPage(1)</OnClick>
+				</Scripts>
+			</Button>
+        </Frames>
+		<Scripts>
+			<OnLoad function="EzWoWArenaLadder_OnLoad"/>
+			<OnShow function="EzWoWArenaLadder_OnShow"/>
+		</Scripts>
+    </Frame>
+
+	<Button name="EzWoWArenaHistoryEntryTemplate" virtual="true">
+		<Size x="100" y="24"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentCol1" inherits="ChatFontNormal" parentKey="col1" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="4"/>
+					</Anchors>
+				</FontString>
+				<Texture name="$parentP1" parentKey="p1" file="Interface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentCol1" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords top="0.0" bottom="0.25" left="0.0" right="0.25"/>
+				</Texture>
+				<Texture name="$parentP2" parentKey="p2" file="Interface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentP1" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords top="0.0" bottom="0.25" left="0.0" right="0.25"/>
+				</Texture>
+				<Texture name="$parentP3" parentKey="p3" file="Interface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentP2" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords top="0.0" bottom="0.25" left="0.0" right="0.25"/>
+				</Texture>
+				<FontString name="$parentCol2" inherits="ChatFontNormal" parentKey="col2" justifyH="LEFT" text="vs">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentP3" relativePoint="RIGHT" x="5"/>
+					</Anchors>
+				</FontString>
+				<Texture name="$parentP4" parentKey="p4" file="Interface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentCol2" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords top="0.0" bottom="0.25" left="0.0" right="0.25"/>
+				</Texture>
+				<Texture name="$parentP5" parentKey="p5" file="Interface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentP4" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords top="0.0" bottom="0.25" left="0.0" right="0.25"/>
+				</Texture>
+				<Texture name="$parentP6" parentKey="p6" file="Interface\GLUES\CHARACTERCREATE\UI-CHARACTERCREATE-CLASSES">
+					<Size x="20" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentP5" relativePoint="RIGHT"/>
+					</Anchors>
+					<TexCoords top="0.0" bottom="0.25" left="0.0" right="0.25"/>
+				</Texture>
+				<FontString inherits="ChatFontNormal" parentKey="col3" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentP6" relativePoint="RIGHT"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Button>
+
+	<Frame name="EzWoWArenaHistory" parent="EzWoWArenaLadderPanel" hidden="true" inherits="EzWoWLadderHistoryTemplate">
+		<Anchors>
+			<Anchor point="TOPLEFT" y="-60"/>
+			<Anchor point="TOPRIGHT" y="-60"/>
+			<Anchor point="BOTTOMLEFT"/>
+			<Anchor point="BOTTOMRIGHT"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad function="EzWoWArenaHistory_OnLoad"/>
+			<OnShow function="EzWoWArenaHistory_Update"/>
+		</Scripts>
+	</Frame>
+
+</Ui>
