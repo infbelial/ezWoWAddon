@@ -1,4 +1,4 @@
-local T = ezWoWText
+local T = ezText
 
 function ElvUIFixGameMenuButton(button)
     if button.isSkinned then

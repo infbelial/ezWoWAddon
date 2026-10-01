@@ -1,9 +1,25 @@
 EZTEXT_DUNGEON_FINDER   = "Поиск подземелий"
 EZTEXT_RAID_FINDER      = "Поиск рейда"
 
-ezWoWText = {}
+EZTEXT_CHARACTER    = "Персонаж"
+EZTEXT_RATING       = "Рейтинг"
+EZTEXT_WINS_LOSSES  = "Победы /\nПоражения"
+EZTEXT_DRAWS        = "Ничьи"
+EZTEXT_LEAVES       = "Покинуто"
+EZTEXT_KILLS        = "Убийства"
+EZTEXT_ASSISTS      = "Ассисты"
+EZTEXT_DEATHS       = "Смерти"
+EZTEXT_MMR          = "MMR"
 
-local T = ezWoWText
+ezText = {}
+
+local T = ezText
+
+T.PLAYER_MENU_ITEM                  = "Дополнительно"
+T.LADDER_BG                         = "Ладдер полей боя"
+T.LADDER_ARENA                      = "Ладдер арены"
+T.GAME_ABANDONED                    = "Покинуто"
+T.GAME_DRAW                         = "Ничья"
 
 T.MENU_BUTTON_ACCOUNT               = "Аккаунт"
 T.ACCOUNT_SETTINGS_HEADER           = "Настройки аккаунта"
@@ -135,3 +151,45 @@ T.MULTISPEC_RENAME                  = "Переименовать"
 T.MULTISPEC_REMOVE                  = "Удалить"
 T.MULTISPEC_RESET_TALENTS           = "Сбросить таланты"
 T.MULTISPEC_EMPTY                   = "Пусто"
+
+
+function ezText:GetBattlegroundName(mapId)
+    if mapId == 30 then
+        return "Альтеракская долина"
+    elseif mapId == 489 then
+        return "Ущелье Песни Войны"
+    elseif mapId == 529 then
+        return "Низина Арати"
+    elseif mapId == 566 then
+        return "Око Бури"
+    elseif mapId == 607 then
+        return "Берег Древних"
+    elseif mapId == 628 then
+        return "Остров Завоеваний"
+    elseif mapId == 726 then
+        return "Два Пика"
+    elseif mapId == 727 then
+        return "Сверкающие копи"
+    elseif mapId == 761 then
+        return "Битва за Гилнеас"
+    elseif mapId == 998 then
+        return "Храм Котмогу"
+    elseif mapId == 1105 then
+        return "Каньое Суровых Ветров"
+    elseif mapId == 559 then
+        return "Арена Награнда"
+    elseif mapId == 562 then
+        return "Арена Острогорья"
+    elseif mapId == 572 then
+        return "Руины Лордерона"
+    elseif mapId == 617 then
+        return "Стоки Даларана"
+    elseif mapId == 618 then
+        return "Арена Доблести"
+    elseif mapId == 980 then
+        return "Арена Тол'вир"
+    elseif mapId == 1134 then
+        return "Пик Тигра"
+    end
+    return tostring(mapId)
+end

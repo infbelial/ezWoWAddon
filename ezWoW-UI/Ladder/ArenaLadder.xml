@@ -120,7 +120,7 @@
             <Frame name="$parentTableHeader">
 				<Size x="300" y="54"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="8" y="-25"/>
+					<Anchor point="TOPLEFT" x="5" y="-25"/>
 					<Anchor point="TOPRIGHT" x="-8" y="-25"/>
 				</Anchors>
 				<Layers>
@@ -161,19 +161,19 @@
 						</Texture>
 					</Layer>
 					<Layer level="ARTWORK">
-						<FontString name="$parentWinsLosses" inherits="GameFontWhiteSmall">
+						<FontString name="$parentWinsLosses" inherits="GameFontWhiteSmall" text="EZTEXT_WINS_LOSSES">
 							<Size x="102" y="30"/>
 							<Anchors>
 								<Anchor point="TOPRIGHT" x="-4"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentMatchMakerRating" inherits="GameFontWhiteSmall" text="MMR">
+						<FontString name="$parentMatchMakerRating" inherits="GameFontWhiteSmall" text="EZTEXT_MMR">
 							<Size x="50" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentWinsLosses" relativePoint="LEFT"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentRating" inherits="GameFontWhiteSmall" text="Рейтинг">
+						<FontString name="$parentRating" inherits="GameFontWhiteSmall" text="EZTEXT_RATING">
 							<Size x="50" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentMatchMakerRating" relativePoint="LEFT"/>
@@ -186,7 +186,7 @@
 								<Anchor point="TOPLEFT" x="4"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentCharacter" inherits="GameFontWhite" text="Персонаж">
+						<FontString name="$parentCharacter" inherits="GameFontWhite" text="EZTEXT_CHARACTER">
 							<Size x="100" y="30"/>
 							<Anchors>
 								<Anchor point="LEFT" relativeTo="$parentRank" relativePoint="RIGHT" x="4"/>
@@ -224,8 +224,7 @@
 							</Slider>
 						</Frames>
 						<Scripts>
-							<OnShow function="EzWoWArenaLadderTable_Update"/>
-							<OnLoad function="EzWoWArenaLadderTable_OnLoad"/>
+							<OnShow function="EzWoWArenaLadder_Update"/>
 						</Scripts>
 					</ScrollFrame>
 				</Frames>

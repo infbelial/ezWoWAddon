@@ -8,7 +8,6 @@ ezWoW =
     muteId = 0,
     muteEnd = 0,
     premiumSpec = {},
-    dataHandlers = {},
     eventHandlers = {},
 }
 
@@ -19,13 +18,13 @@ local function AppendData(array, data)
 end
 
 function ezWoW:Init()
-    ezWoWCache = nil
+    -- ezWoWCache = nil
     if ezWoWCache == nil then
         ezWoWCache = {}
         ezWoWCache.version = 0
     end
 
-    ezWoWCharCache = nil
+    -- ezWoWCharCache = nil
     if ezWoWCharCache == nil then
         ezWoWCharCache = {}
         ezWoWCharCache.version = 0
@@ -94,7 +93,6 @@ function ezWoW:CreateOption(optionKey, category)
     local option = {}
     option.value = 0            -- actual value from the server
     option.defaultValue = 0     -- default value
-    option.clientValue = 0      -- just for UI
     option.category = category  -- also just for UI
     self.options[optionKey] = option
 end
@@ -143,6 +141,8 @@ function ezWoW:CallHandlers(event, ...)
         for i = 1, #handlers do
             handlers[i](...)
         end
+    else
+        ezLog:Debug(string.format("No handler for event '%s'", event))
     end
     self.event = nil
 end

@@ -10,7 +10,7 @@ local MENU_ITEM_SAVE = 2
 local SPEC_MAX = 7
 local SPEC_MAX_NO_EZPLUS = 5
 
-local T = ezWoWText
+local T = ezText
 
 function EzWoWMultispecMenu_UpdateState()
     if ezWoW:HasPremium() then

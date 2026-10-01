@@ -6,9 +6,15 @@ end
 EZTEXT_DUNGEON_FINDER   = "Dungeon finder"
 EZTEXT_RAID_FINDER      = "Raid finder"
 
-ezWoWText = ezWoWText or {}
+ezText = ezText or {}
 
-local T = ezWoWText
+local T = ezText
+
+T.PLAYER_MENU_ITEM                  = "Extra"
+T.LADDER_BG                         = "Battleground Ladder"
+T.LADDER_ARENA                      = "Arena Ladder"
+T.GAME_ABANDONED                    = "Abandoned"
+T.GAME_DRAW                         = "Draw"
 
 T.MENU_BUTTON_ACCOUNT               = "Account"
 T.ACCOUNT_SETTINGS_HEADER           = "Account settings"
@@ -140,3 +146,45 @@ T.MULTISPEC_RENAME                  = "Rename"
 T.MULTISPEC_REMOVE                  = "Remove"
 T.MULTISPEC_RESET_TALENTS           = "Reset talents"
 T.MULTISPEC_EMPTY                   = "Empty"
+
+
+function ezText:GetBattlegroundName(mapId)
+    if mapId == 30 then
+        return "Alterac Valley"
+    elseif mapId == 489 then
+        return "Warsong Gulch"
+    elseif mapId == 529 then
+        return "Arathi Basin"
+    elseif mapId == 566 then
+        return "Eye of the Storm"
+    elseif mapId == 607 then
+        return "Strand of the Ancients"
+    elseif mapId == 628 then
+        return "Isle of Conquest"
+    elseif mapId == 726 then
+        return "Twin Peaks"
+    elseif mapId == 727 then
+        return "Silvershard Mines"
+    elseif mapId == 761 then
+        return "The Battle for Gilneas"
+    elseif mapId == 998 then
+        return "Temple of Kotmogu"
+    elseif mapId == 1105 then
+        return "Deepwind Gorge"
+    elseif mapId == 559 then
+        return "Nagrand Arena"
+    elseif mapId == 562 then
+        return "Blade's Edge Arena"
+    elseif mapId == 572 then
+        return "Ruins of Lordaeron"
+    elseif mapId == 617 then
+        return "Dalaran Sewers"
+    elseif mapId == 618 then
+        return "The Ring of Valor"
+    elseif mapId == 980 then
+        return "Tol'Viron Arena"
+    elseif mapId == 1134 then
+        return "The Tiger's Peak"
+    end
+    return tostring(mapId)
+end

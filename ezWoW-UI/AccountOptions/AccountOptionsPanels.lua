@@ -1,4 +1,4 @@
-local T = ezWoWText
+local T = ezText
 
 function EzWoWAccountOptionsBaseCheckButtonTemplate_OnClick(self)
 	if self:GetChecked() then
@@ -18,9 +18,9 @@ function EzWoWOptionsCheckButton_OnLoad(self, key, category)
     text:SetJustifyH("LEFT")
     text:SetWidth(350)
 
-    self.tooltipText = ezWoWText[textKey.."_TOOLTIP"]
+    self.tooltipText = ezText[textKey.."_TOOLTIP"]
     local buttonText = _G[self:GetName().."Text"]
-    buttonText:SetText(ezWoWText[textKey])
+    buttonText:SetText(ezText[textKey])
     self:SetHitRectInsets(0, -(buttonText:GetWidth() + 15), 0, 0)
 
     EzWoWAccountOptionsFrame_RegisterCheckBox(self, category)
@@ -205,19 +205,19 @@ end
 
 function EzWoWPrivacy_InitDropDown(self)
     local info = UIDropDownMenu_CreateInfo()
-    info.text = ezWoWText.PRIVACY_ALL
+    info.text = ezText.PRIVACY_ALL
     info.value = 0
     info.func = function() SelectDropDownValue(self, 0) end
     UIDropDownMenu_AddButton(info)
 
     info = UIDropDownMenu_CreateInfo()
-    info.text = ezWoWText.PRIVACY_FRIENDS
+    info.text = ezText.PRIVACY_FRIENDS
     info.value = 1
     info.func = function() SelectDropDownValue(self, 1) end
     UIDropDownMenu_AddButton(info)
 
     info = UIDropDownMenu_CreateInfo()
-    info.text = ezWoWText.PRIVACY_NOBODY
+    info.text = ezText.PRIVACY_NOBODY
     info.value = 2
     info.func = function() SelectDropDownValue(self, 2) end
     UIDropDownMenu_AddButton(info)
@@ -228,7 +228,7 @@ function EzWoWRateControl_OnLoad(self, key, category)
     self.optionKey = key
     local name = self:GetName()
 
-    _G[name.."Text"]:SetText(ezWoWText["OPT_"..key])
+    _G[name.."Text"]:SetText(ezText["OPT_"..key])
 
     local slider = _G[name.."Slider"]
     slider.optionKey = key
@@ -324,14 +324,14 @@ end
 
 function EzWoWRateDropDown_OnLoad(self)
     local info  = UIDropDownMenu_CreateInfo()
-    info.text   = ezWoWText.MENU_RATES_MAXIMUM
-    info.value  = ezWoWText.MENU_RATES_MAXIMUM
+    info.text   = ezText.MENU_RATES_MAXIMUM
+    info.value  = ezText.MENU_RATES_MAXIMUM
     info.func   = function() SetMaxRate(self) end 
     UIDropDownMenu_AddButton(info);
 
     info        = UIDropDownMenu_CreateInfo()
-    info.text   = ezWoWText.MENU_RATES_FIXED
-    info.value  = ezWoWText.MENU_RATES_FIXED
+    info.text   = ezText.MENU_RATES_FIXED
+    info.value  = ezText.MENU_RATES_FIXED
     info.func   = function() SetFixedRate(self) end 
     UIDropDownMenu_AddButton(info);
 end

@@ -190,12 +190,118 @@ function EzWoWLadderPageNum_OnEscapePressed(self)
     self:SetText(string.format("%d", self:GetParent().currentPage))
 end
 
-function EzWoWLadder_Update(self, startPos, endPos, total)
+function EzWoWLadder_Refresh(self, startPos, endPos, total)
     self.totalPages = math.ceil(total / self.pageSize)
     self.buttonLast:SetFormattedText("%d", self.totalPages)
     if self:IsVisible() then
         EzWoWLadder_UpdateButtons(self)
         _G[self:GetName().."TableRows"].update()
+    end
+end
+
+local function GetRankWidth(rank)
+    if rank >= 1000 then
+        return 48
+    elseif rank >= 100 then
+        return 32
+    end
+    return 24
+end
+
+function EzWoWLadder_Update(self)
+    local scrollFrame = _G[self:GetName().."TableRows"]
+    local offset = HybridScrollFrame_GetOffset(scrollFrame)
+
+    local buttons = scrollFrame.buttons
+    local numButtons = #buttons
+
+    local numPlayers = 0
+    local players = self.data
+    if players then
+        numPlayers = #players
+    end
+
+    local ladderInfo = self.ladderInfo
+    local displayPlayer = self.displayPlayer
+
+    local rankWidth = GetRankWidth(ladderInfo and ladderInfo.rank or 0)
+
+    for i = numPlayers, 1, -1 do
+        local rank = players[i].rank
+        if rank ~= 0 then
+            local newWidth = GetRankWidth(rank)
+            if newWidth > rankWidth then
+                rankWidth = newWidth
+            end
+            break
+        end
+    end
+
+    local playerIndex = 0
+    local displayedHeight = 0
+
+    for i = 1, numButtons do
+        local row = buttons[i]
+        playerIndex = i + offset
+        if playerIndex > numPlayers then
+            row:Hide()
+        else
+            local player = players[playerIndex]
+            row.index = playerIndex
+            if player.guid ~= row.guid then
+                row.guid = player.guid
+                row.playerRank:SetWidth(rankWidth)
+                displayPlayer(row, player, selectionId)
+                if playerIndex % 2 ~= 0 then
+                    row.background:SetBlendMode("BLEND")
+                else
+                    row.background:SetBlendMode("ADD")
+                end
+            end
+            row:Show()
+            displayedHeight = displayedHeight + buttons[i]:GetHeight()
+        end
+    end
+
+    local totalHeight = 24 * numPlayers
+
+    HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight)
+
+    local mostRightHeader = self.mostRightHeader
+    local scrollBar = _G[scrollFrame:GetName().."ScrollBar"]
+
+    if scrollBar:IsShown() then
+        scrollFrame:SetPoint("BOTTOMRIGHT", -26, 4)
+        mostRightHeader:SetPoint("TOPRIGHT", -30, 0) -- we do not have inset here so additional 4
+    else
+        scrollFrame:SetPoint("BOTTOMRIGHT", -4, 4)
+        mostRightHeader:SetPoint("TOPRIGHT", -8, 0)
+    end
+
+    local buttonWidth = scrollFrame:GetWidth()
+
+    for i = 1, numButtons do
+        playerIndex = i + offset
+        if playerIndex <= numPlayers then
+            buttons[i]:SetWidth(buttonWidth)
+        end
+    end
+
+    local characterRow = _G[self:GetName().."CharacterRow"]
+
+    if ladderInfo == nil then
+        characterRow:Hide()
+    else
+        characterRow:Show()
+        _G[self:GetName().."TableHeaderRank"]:SetWidth(rankWidth)
+
+        characterRow.playerRank:SetWidth(rankWidth)
+        if scrollBar:IsShown() then
+            characterRow.mostRightColumn:SetPoint("TOPRIGHT", -26, 0)
+        else
+            characterRow.mostRightColumn:SetPoint("TOPRIGHT", -4, 0)
+        end
+        displayPlayer(characterRow, ladderInfo)
     end
 end
 
@@ -218,20 +324,4 @@ function EzWoWLadderFrame_OnLoad(self)
     SetPortraitToTexture(self:GetName().."Portrait", "Interface\\ICONS\\Ability_Warrior_Challange")
 end
 
-function EzWoWLadder_Init()
-    ezWoW:SendMessage(string.format("INIT_MODULE:battleground;%d;", ezWoW.bgHistory and ezWoW.bgHistory[#ezWoW.bgHistory].id or 0))
-    ezWoW:SendMessage(string.format("INIT_MODULE:arena;%d;", ezWoW.arenaHistory and ezWoW.arenaHistory[#ezWoW.arenaHistory].id or 0))
-
-    ezWoW:RegisterHandler("BG_LADDER_INFO", EzWoWBattlegroundStatsSummary_Update)
-
-    ezWoW:RegisterHandler("BG_LADDER", function(data)
-        EzWoWBattlegroundLadder.ladder = data.content
-        EzWoWLadder_Update(EzWoWBattlegroundLadder, data.startPos, data.endPos, data.totalSize)
-    end)
-
-    ezWoW:RegisterHandler("ARENA_LADDER", function(data)
-        EzWoWArenaLadder.ladder = data.content
-        EzWoWLadder_Update(EzWoWArenaLadder, data.startPos, data.endPos, data.totalSize)
-    end)    
-end
 

@@ -64,7 +64,7 @@ function ezWoW:HandleInit(msg)
 
     if ezWoWCache.version ~= version then
         ezWoWCache = {}
-        ezWoWCharCache.version = version
+        ezWoWCache.version = version
     end
     if ezWoWCharCache.version ~= version then
         ezWoWCharCache = {}

@@ -193,43 +193,43 @@
 						</Texture>
 					</Layer>
 					<Layer level="ARTWORK">
-						<FontString name="$parentDeaths" inherits="GameFontWhiteSmall" text="Смерти">
+						<FontString name="$parentDeaths" inherits="GameFontWhiteSmall" text="EZTEXT_DEATHS">
 							<Size x="50" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" x="-4"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentAssists" inherits="GameFontWhiteSmall" text="Ассисты">
+						<FontString name="$parentAssists" inherits="GameFontWhiteSmall" text="EZTEXT_ASSISTS">
 							<Size x="50" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentDeaths" relativePoint="LEFT"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentKills" inherits="GameFontWhiteSmall" text="Убийства">
+						<FontString name="$parentKills" inherits="GameFontWhiteSmall" text="EZTEXT_KILLS">
 							<Size x="54" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentAssists" relativePoint="LEFT"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentLeaves" inherits="GameFontWhiteSmall" text="Покинуто">
+						<FontString name="$parentLeaves" inherits="GameFontWhiteSmall" text="EZTEXT_LEAVES">
 							<Size x="54" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentKills" relativePoint="LEFT"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentDraws" inherits="GameFontWhiteSmall" text="Ничьи">
+						<FontString name="$parentDraws" inherits="GameFontWhiteSmall" text="EZTEXT_DRAWS">
 							<Size x="50" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentLeaves" relativePoint="LEFT"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentWinsLosses" inherits="GameFontWhiteSmall">
+						<FontString name="$parentWinsLosses" inherits="GameFontWhiteSmall" text="EZTEXT_WINS_LOSSES">
 							<Size x="102" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentDraws" relativePoint="LEFT"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentRating" inherits="GameFontWhiteSmall" text="Рейтинг">
+						<FontString name="$parentRating" inherits="GameFontWhiteSmall" text="EZTEXT_RATING">
 							<Size x="48" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentWinsLosses" relativePoint="LEFT"/>
@@ -242,7 +242,7 @@
 								<Anchor point="TOPLEFT" x="4"/>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentCharacter" inherits="GameFontWhite" text="Персонаж">
+						<FontString name="$parentCharacter" inherits="GameFontWhite" text="EZTEXT_CHARACTER">
 							<Size x="100" y="30"/>
 							<Anchors>
 								<Anchor point="LEFT" relativeTo="$parentRank" relativePoint="RIGHT" x="4"/>
@@ -280,8 +280,7 @@
 							</Slider>
 						</Frames>
 						<Scripts>
-							<OnShow function="EzWoWBattlegroundLadderTable_Update"/>
-							<OnLoad function="EzWoWBattlegroundLadderTable_OnLoad"/>
+							<OnShow function="EzWoWBattlegroundLadder_Update"/>
 						</Scripts>
 					</ScrollFrame>
 				</Frames>

@@ -1,4 +1,20 @@
 function EzWoWArenaLadderPanel_OnShow(self)
+    if not self.initialized then
+        ezWoW:SendMessage(string.format("INIT_MODULE:arena;%d;", ezWoW.arenaHistory and ezWoW.arenaHistory[#ezWoW.arenaHistory].id or 0))
+
+        ezWoW:RegisterHandler("ARENA_LADDER", function(data)
+            EzWoWArenaLadder.data = data.content
+            EzWoWLadder_Refresh(EzWoWArenaLadder, data.startPos, data.endPos, data.totalSize)
+        end)
+
+        ezWoW:RegisterHandler("ARENA_LADDER_INFO", function(data)
+            EzWoWArenaLadder.ladderInfo = ezWoW.arenaInfo
+            EzWoWArenaLadder_Update()
+        end)
+
+        self.initialized = true
+    end
+
     local now = time()
     local endTime = ezWoW.arenaSeason.endDate
     local seasonEnd = ""
@@ -57,115 +73,31 @@ function EzWoWArenaLadder_OnLoad(self)
     self.currentPage = 1
     self.pageSize = 20
     self.type = "ARENA"
-    EzWoWArenaLadderTableHeaderWinsLosses:SetText("Победы /\nПоражения")
-    EzWoWArenaLadderCharacterRow.background:SetBlendMode("BLEND")
+
+    self.ladderInfo = ezWoW.arenaInfo
+    self.displayPlayer = EzWoWArenaLadder_DisplayPlayer
+    self.mostRightHeader = EzWoWArenaLadderTableHeaderWinsLosses
+
+    local characterRow = EzWoWArenaLadderCharacterRow
+    characterRow.mostRightColumn = characterRow.playerWinRate
+    characterRow.background:SetBlendMode("BLEND")
+
+    local scrollFrame = EzWoWArenaLadderTableRows
+    scrollFrame.update = EzWoWArenaLadder_Update
+    HybridScrollFrame_CreateButtons(scrollFrame, "EzWoWArenaLadderRowTemplate", 0, 0)
 end
 
 function EzWoWArenaLadder_OnShow(self)
     self.pageNum:SetText(string.format("%d", self.currentPage))
+    EzWoWArenaLadder_Update()
     EzWoWLadder_SendRequest(self)
 end
 
-function EzWoWArenaLadderTable_OnLoad(self)
-    self.update = EzWoWArenaLadderTable_Update
-    HybridScrollFrame_CreateButtons(self, "EzWoWArenaLadderRowTemplate", 0, 0)
+function EzWoWArenaLadder_Update()
+    EzWoWLadder_Update(EzWoWArenaLadder)
 end
 
-local function GetRankWidth(rank)
-    if rank >= 1000 then
-        return 48
-    elseif rank >= 100 then
-        return 32
-    end
-    return 24
-end
-
-function EzWoWArenaLadderTable_Update()
-    local scrollFrame = EzWoWArenaLadderTableRows
-    local offset = HybridScrollFrame_GetOffset(scrollFrame)
-    local buttons = scrollFrame.buttons
-    local numButtons = #buttons
-
-    local numPlayers = 0
-    local ladder = EzWoWArenaLadder.ladder
-    if ladder then
-        numPlayers = #ladder
-    end
-
-    local rankWidth = GetRankWidth(ezWoW.arenaInfo and ezWoW.arenaInfo.rank or 0)
-
-    for i = numPlayers, 1, -1 do
-        local rank = ladder[i].rank
-        if rank ~= 0 then
-            local newWidth = GetRankWidth(rank)
-            if newWidth > rankWidth then
-                rankWidth = newWidth
-            end
-            break
-        end
-    end
-
-    local playerIndex = 0
-    local displayedHeight = 0
-
-    for i = 1, numButtons do
-        local row = buttons[i]
-        playerIndex = i + offset
-        if playerIndex > numPlayers then
-            row:Hide()
-        else
-            local player = ladder[playerIndex]
-            row.index = playerIndex
-            if player.guid ~= row.guid then
-                row.guid = player.guid
-                row.playerRank:SetWidth(rankWidth)
-                EzWoWArenaLadderTable_DisplayPlayer(row, player, selectionId)
-                if playerIndex % 2 ~= 0 then
-                    row.background:SetBlendMode("BLEND")
-                else
-                    row.background:SetBlendMode("ADD")
-                end
-            end
-            row:Show()
-            displayedHeight = displayedHeight + buttons[i]:GetHeight()
-        end
-    end
-
-    local totalHeight = 24 * numPlayers
-
-    HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight)
-
-    local header = EzWoWArenaLadderTableHeaderWinsLosses;
-
-    if EzWoWArenaLadderTableRowsScrollBar:IsShown() then
-        scrollFrame:SetPoint("BOTTOMRIGHT", -26, 4)
-        header:SetPoint("TOPRIGHT", -30, 0) -- we do not have inset here so additional 4
-    else
-        scrollFrame:SetPoint("BOTTOMRIGHT", -4, 4)
-        header:SetPoint("TOPRIGHT", -8, 0)
-    end
-
-    local buttonWidth = EzWoWArenaLadderTableRows:GetWidth()
-
-    for i = 1, numButtons do
-        playerIndex = i + offset
-        if playerIndex <= numPlayers then
-            buttons[i]:SetWidth(buttonWidth)
-        end
-    end
-
-    EzWoWArenaLadderTableHeaderRank:SetWidth(rankWidth)
-
-    EzWoWArenaLadderCharacterRow.playerRank:SetWidth(rankWidth)
-    if EzWoWArenaLadderTableRowsScrollBar:IsShown() then
-        EzWoWArenaLadderCharacterRow.playerWinRate:SetPoint("TOPRIGHT", -26, 0)
-    else
-        EzWoWArenaLadderCharacterRow.playerWinRate:SetPoint("TOPRIGHT", -4, 0)
-    end
-    EzWoWArenaLadderTable_DisplayPlayer(EzWoWArenaLadderCharacterRow, ezWoW.arenaInfo)
-end
-
-function EzWoWArenaLadderTable_DisplayPlayer(row, player)
+function EzWoWArenaLadder_DisplayPlayer(row, player)
     if player.rank ~= 0 then
         row.playerRank:SetFormattedText("%d", player.rank)
     else
@@ -191,25 +123,6 @@ end
 function EzWoWArenaHistory_OnLoad(self)
     self.content.update = EzWoWArenaHistory_Update
     HybridScrollFrame_CreateButtons(self.content, "EzWoWArenaHistoryEntryTemplate", 0, 0)
-end
-
-local function GetMapName(id)
-    if id == 559 then
-        return "Арена Награнда"
-    elseif id == 562 then
-        return "Арена Острогорья"
-    elseif id == 572 then
-        return "Руины Лордерона"
-    elseif id == 617 then
-        return "Стоки Даларана"
-    elseif id == 618 then
-        return "Арена Доблести"
-    elseif id == 980 then
-        return "Арена Тол'вир"
-    elseif id == 1134 then
-        return "Пик Тигра"
-    end
-    return tostring(id)
 end
 
 function EzWoWArenaHistory_Update()
@@ -331,14 +244,14 @@ function EzWoWArenaHistory_Update()
             end
 
             if entry.players[1].win then
-                fmt = "|cFFFFFFFF%s|r - |cFFFFD200%d|r (|cFF00FF00+%d|r)"
+                fmt = "|cFFFFFFFF%s|r |cFFFFD200%d|r (|cFF00FF00+%d|r)"
             elseif entry.players[1].change == 0 then
-                fmt = "|cFFFFFFFF%s|r - |cFFFFD200%d|r (|cFFFF0000-%d|r)"
+                fmt = "|cFFFFFFFF%s|r |cFFFFD200%d|r (|cFFFF0000-%d|r)"
             else
-                fmt = "|cFFFFFFFF%s|r - |cFFFFAA44%d|r (|cFFFF0000%d|r)"
+                fmt = "|cFFFFFFFF%s|r |cFFFFAA44%d|r (|cFFFF0000%d|r)"
             end
 
-            row.col3:SetFormattedText(fmt, GetMapName(entry.map), entry.players[1].rating, entry.players[1].change)
+            row.col3:SetFormattedText(fmt, ezText:GetBattlegroundName(entry.map), entry.players[1].rating, entry.players[1].change)
             row:Show()
             displayedHeight = displayedHeight + buttons[i]:GetHeight()
         end
