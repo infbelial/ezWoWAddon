@@ -2,7 +2,11 @@ local T = ezText
 
 function EzWoWBattlegroundLadderPanel_OnShow(self)
     if not self.initialized then
-        ezWoW:SendMessage(string.format("INIT_MODULE:battleground;%d;", ezWoW.bgHistory and ezWoW.bgHistory[#ezWoW.bgHistory].id or 0))
+        local lastGameId = 0
+        if ezWoW.bgHistory and #ezWoW.bgHistory > 0 then
+            lastGameId = ezWoW.bgHistory[#ezWoW.bgHistory].id
+        end
+        ezWoW:SendMessage(string.format("INIT_MODULE:battleground;%d;", lastGameId))
 
         ezWoW:RegisterHandler("BG_LADDER", function(data)
             EzWoWBattlegroundLadder.data = data.content

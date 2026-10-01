@@ -1,6 +1,11 @@
 function EzWoWArenaLadderPanel_OnShow(self)
     if not self.initialized then
-        ezWoW:SendMessage(string.format("INIT_MODULE:arena;%d;", ezWoW.arenaHistory and ezWoW.arenaHistory[#ezWoW.arenaHistory].id or 0))
+        local lastGameId = 0
+        if ezWoW.arenaHistory and #ezWoW.arenaHistory > 0 then
+            lastGameId = ezWoW.arenaHistory[#ezWoW.arenaHistory].id
+        end
+
+        ezWoW:SendMessage(string.format("INIT_MODULE:arena;%d;", lastGameId))
 
         ezWoW:RegisterHandler("ARENA_LADDER", function(data)
             EzWoWArenaLadder.data = data.content
