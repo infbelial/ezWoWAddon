@@ -87,6 +87,10 @@ function ezWoW:Init()
     self:RegisterHandler("CONFIG", function(data)
         self.serverConfig = data
     end)
+
+    self:RegisterHandler("PREMIUM_SPEC", function(data)
+        self.premiumSpec = data
+    end)
 end
 
 function ezWoW:CreateOption(optionKey, category)

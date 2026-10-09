@@ -89,7 +89,6 @@ StaticPopupDialogs["EZWOW_MULTISPEC_RENAME"] =
 	timeout = 0,
 	exclusive = 1,
 	whileDead = 1,
-    hideOnEscape = true,
     hasEditBox = true,
 }
 
@@ -105,7 +104,19 @@ StaticPopupDialogs["EZWOW_MULTISPEC_REMOVE"] =
 	timeout = 0,
 	exclusive = 1,
 	whileDead = 1,
-    hideOnEscape = true,
+}
+
+StaticPopupDialogs["EZWOW_MULTISPEC_RESET_TALENTS"] = 
+{
+    text = T.MULTISPEC_POPUP_RESET_TALENTS,
+	button1 = OKAY,
+	button2 = NO,
+	OnAccept = function(self)
+        ezWoW:SendMessage(string.format("RESET_TALENTS;", self.data))
+    end,
+	hideOnEscape = 1,
+	timeout = 0,
+	exclusive = 1,
 }
 
 function EzWoWMultispecDropDownMenu_Init()
@@ -163,6 +174,11 @@ function EzWoWMultispecDropDownMenu_Init()
         info.func = function()
             DropDownList1:Hide()
             StaticPopup_Show("EZWOW_MULTISPEC_RENAME", "", "", specIndex)
+            local spec = ezWoW.premiumSpec[specIndex]
+            if spec then
+                StaticPopup1EditBox:SetText(spec.name)
+                StaticPopup1EditBox:HighlightText()
+            end
         end
         UIDropDownMenu_AddButton(info, 2)
 
@@ -205,7 +221,7 @@ function EzWoWMultispecDropDownMenu_Init()
         info.text = T.MULTISPEC_RESET_TALENTS
         info.notCheckable = 1
         info.func = function(self)
-            ezWoW:SendMessage("RESET_TALENTS;")
+            StaticPopup_Show("EZWOW_MULTISPEC_RESET_TALENTS")
         end
         UIDropDownMenu_AddButton(info, 1)
 

@@ -145,6 +145,7 @@ T.MULTISPEC_POPUP_SAVE              = "Введите название для с
 T.MULTISPEC_POPUP_RESAVE            = "Сохраненная специализация \"%s\" будет перезаписана текущими талантами и символами"
 T.MULTISPEC_POPUP_RENAME            = "Введите новое название"
 T.MULTIPSEC_POPUP_REMOVE            = "Вы действительно хотите удалить сохраненную специализацию \"%s\"?"
+T.MULTISPEC_POPUP_RESET_TALENTS     = "Вы действительно хотите сбросить таланты и символы?"
 T.MULTISPEC_APPLY                   = "Применить"
 T.MULTISPEC_SAVE                    = "Сохранить"
 T.MULTISPEC_RENAME                  = "Переименовать"
