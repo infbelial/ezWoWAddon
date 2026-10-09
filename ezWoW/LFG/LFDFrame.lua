@@ -616,3 +616,15 @@ StaticPopupDialogs["LFG_OFFER_CONTINUE"].OnAccept = function(self)
 end
 
 tinsert(UnitPopupMenus["RAID_PLAYER"], 9, "VOTE_TO_KICK")
+
+ezWoW:RegisterHandler("CONFIG", function(serverConfig)
+	if serverConfig then
+		if serverConfig.lfrEnabled then
+			LFDParentFrameTab1:Show()
+			LFDParentFrameTab2:Show()
+		else
+			LFDParentFrameTab1:Hide()
+			LFDParentFrameTab2:Hide()
+		end
+	end
+end)
