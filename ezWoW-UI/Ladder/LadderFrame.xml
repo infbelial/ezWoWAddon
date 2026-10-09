@@ -46,11 +46,11 @@
 			<Attribute name="UIPanelLayout-area" type="string" value="left"/>
 			<Attribute name="UIPanelLayout-pushable" type="number" value="0"/>
 			<Attribute name="UIPanelLayout-whileDead" type="boolean" value="true"/>
-			<Attribute name="UIPanelLayout-width" type="number" value="655"/>
+			<Attribute name="UIPanelLayout-width" type="number" value="665"/>
 			<Attribute name="UIPanelLayout-xoffset" type="number" value="15"/>
 			<Attribute name="UIPanelLayout-yoffset" type="number" value="-14"/>
 		</Attributes>
-		<Size x="625" y="606"/>
+		<Size x="635" y="606"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -80,4 +80,138 @@
 			<OnLoad function="EzWoWLadderFrame_OnLoad"/>
 		</Scripts>
 	</Frame>
+
+	<Frame name="EzWoWLadderTable" inherits="EzWoWInsetFrameTemplate" virtual="true">
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString inherits="GameFontWhite" parentKey="loading" text="Загрузка...">
+					<Size x="300" y="30"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<ScrollFrame name="$parentRows" parentKey="content" inherits="HybridScrollFrameTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="-26" y="4"/>
+				</Anchors>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-14"/>
+							<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="5" y="10"/>
+						</Anchors>
+					</Slider>
+				</Frames>
+			</ScrollFrame>
+		</Frames>
+		<Scripts>
+			<OnShow>EzWoWLadder_Update(self:GetParent(), false)</OnShow>
+		</Scripts>
+	</Frame>
+
+	<Frame name="EzWoWLadderNavigation" virtual="true">
+		<Size x="200" y ="32"/>
+		<Frames>
+			<Button name="$parentLast" parentKey="last" inherits="UIPanelButtonTemplate">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+				<NormalTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Up"/>
+				<PushedTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Down"/>
+				<DisabledTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>local ladder = self:GetParent():GetParent(); EzWoWLadder_OpenPage(ladder, ladder.totalPages)</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentNext" parentKey="next">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentLast" relativePoint="LEFT"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick function="EzWoWLadderButtonNext_OnClick"/>
+				</Scripts>
+			</Button>
+			<EditBox name="$parentPageNum" parentKey="pageNum">
+				<Size x="28" y="28"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentNext" relativePoint="LEFT"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+							<Size x="8" y="22"/>
+							<Anchors>
+								<Anchor point="LEFT" x="-5" y="0"/>
+							</Anchors>
+							<TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+							<Size x="8" y="22"/>
+							<Anchors>
+								<Anchor point="RIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+						</Texture>
+						<Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+							<Size x="10" y="22"/>
+							<Anchors>
+								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+								<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+							</Anchors>
+							<TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<FontString inherits="ChatFontNormal"/>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus(false)</OnLoad>
+					<OnEditFocusLost function="EzWoWLadderPageNum_OnFocusLost"/>
+					<OnEscapePressed function="EzWoWLadderPageNum_OnEscapePressed"/>
+					<OnEnterPressed function="EzWoWLadderPageNum_OnEnterPressed"/>
+				</Scripts>
+			</EditBox>
+			<Button name="$parentPrev" parentKey="prev">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentPageNum" relativePoint="LEFT" x="-4"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick function="EzWoWLadderButtonPrev_OnClick"/>
+				</Scripts>
+			</Button>
+			<Button name="$parentFirst" parentKey="first" inherits="UIPanelButtonTemplate" text="1">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentPrev" relativePoint="LEFT"/>
+				</Anchors>			
+				<NormalTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Up"/>
+				<PushedTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Down"/>
+				<DisabledTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Disabled"/>
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+				<Scripts>
+					<OnClick>EzWoWLadder_OpenPage(self:GetParent():GetParent(), 1)</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+
 </Ui>

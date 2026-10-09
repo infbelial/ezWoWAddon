@@ -14,7 +14,7 @@ function EzWoWArenaLadderPanel_OnShow(self)
 
         ezWoW:RegisterHandler("ARENA_LADDER_INFO", function(data)
             EzWoWArenaLadder.ladderInfo = ezWoW.arenaInfo
-            EzWoWArenaLadder_Update()
+            EzWoWArenaLadder_Update(true)
         end)
 
         self.initialized = true
@@ -76,7 +76,11 @@ end
 
 function EzWoWArenaLadder_OnLoad(self)
     self.currentPage = 1
+    self.totalPages = 1
     self.pageSize = 20
+    self.lastRequest = 0
+    self.requestTimer = 0
+    self.responseTimer = 0
     self.type = "ARENA"
 
     self.ladderInfo = ezWoW.arenaInfo
@@ -93,13 +97,13 @@ function EzWoWArenaLadder_OnLoad(self)
 end
 
 function EzWoWArenaLadder_OnShow(self)
-    self.pageNum:SetText(string.format("%d", self.currentPage))
+    self.navigation.pageNum:SetText(string.format("%d", self.currentPage))
     EzWoWArenaLadder_Update()
-    EzWoWLadder_SendRequest(self)
+    EzWoWLadder_OpenPage(self, self.currentPage)
 end
 
-function EzWoWArenaLadder_Update()
-    EzWoWLadder_Update(EzWoWArenaLadder)
+function EzWoWArenaLadder_Update(forceUpdate)
+    EzWoWLadder_Update(EzWoWArenaLadder, forceUpdate)
 end
 
 function EzWoWArenaLadder_DisplayPlayer(row, player)

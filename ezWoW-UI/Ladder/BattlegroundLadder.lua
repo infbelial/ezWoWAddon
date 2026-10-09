@@ -15,7 +15,7 @@ function EzWoWBattlegroundLadderPanel_OnShow(self)
 
         ezWoW:RegisterHandler("BG_LADDER_INFO", function(data)
             EzWoWBattlegroundLadder.ladderInfo = data
-            EzWoWBattlegroundLadder_Update()
+            EzWoWBattlegroundLadder_Update(true)
         end)
 
         self.initialized = true
@@ -54,7 +54,11 @@ end
 
 function EzWoWBattlegroundLadder_OnLoad(self)
     self.currentPage = 1
+    self.totalPages = 1
     self.pageSize = 20
+    self.lastRequest = 0
+    self.requestTimer = 0
+    self.responseTimer = 0
     self.type = "BG"
 
     self.ladderInfo = ezWoW.bgLadderInfo
@@ -71,13 +75,13 @@ function EzWoWBattlegroundLadder_OnLoad(self)
 end
 
 function EzWoWBattlegroundLadder_OnShow(self)
-    self.pageNum:SetText(string.format("%d", self.currentPage))
+    self.navigation.pageNum:SetText(string.format("%d", self.currentPage))
     EzWoWBattlegroundLadder_Update()
-    EzWoWLadder_SendRequest(self)
+    EzWoWLadder_OpenPage(self, self.currentPage)
 end
 
-function EzWoWBattlegroundLadder_Update()
-    EzWoWLadder_Update(EzWoWBattlegroundLadder)
+function EzWoWBattlegroundLadder_Update(forceUpdate)
+    EzWoWLadder_Update(EzWoWBattlegroundLadder, forceUpdate)
 end
 
 function EzWoWBattlegroundLadder_DisplayPlayer(row, player)

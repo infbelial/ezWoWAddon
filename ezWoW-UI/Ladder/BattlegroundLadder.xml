@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
 
 	<Frame name="EzWoWBattlegroundLadderRowTemplate" virtual="true">
-		<Size x="100" y="24"/>
+		<Size x="100" y="22"/>
 		<Layers>
 			<Layer level="ARTWORK">
 				<!-- stats, from right to left -->
@@ -48,7 +48,7 @@
 					</Anchors>
 				</FontString>
 				<FontString name="$parentRating" parentKey="playerRating" inherits="GameFontWhite">
-					<Size x="48" y="20"/>
+					<Size x="45" y="20"/>
 					<Anchors>
 						<Anchor point="RIGHT" relativeTo="$parentWinsLosses" relativePoint="LEFT"/>
 					</Anchors>
@@ -104,7 +104,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parentTab1" inherits="TabButtonTemplate" text="Ладдер" id="1" frameLevel="5" parentArray="Tabs">
+			<Button name="$parentTab1" inherits="TabButtonTemplate" text="EZTEXT_LADDER" id="1" frameLevel="5" parentArray="Tabs">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="58" y="-28"/>
 				</Anchors>
@@ -113,7 +113,7 @@
 					<OnClick function="EzWoWBattlegroundLadderTab_OnClick"/>
 				</Scripts>
 			</Button>
-			<Button name="$parentTab2" inherits="TabButtonTemplate" text="История игр" id="2" frameLevel="5" parentArray="Tabs">
+			<Button name="$parentTab2" inherits="TabButtonTemplate" text="EZTEXT_LADDER_HISTORY" id="2" frameLevel="5" parentArray="Tabs">
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT"/>
 				</Anchors>
@@ -230,7 +230,7 @@
 							</Anchors>
 						</FontString>
 						<FontString name="$parentRating" inherits="GameFontWhiteSmall" text="EZTEXT_RATING">
-							<Size x="48" y="30"/>
+							<Size x="45" y="30"/>
 							<Anchors>
 								<Anchor point="RIGHT" relativeTo="$parentWinsLosses" relativePoint="LEFT"/>
 							</Anchors>
@@ -260,131 +260,24 @@
 					</Frame>
 				</Frames>
 			</Frame>
-			<Frame name="$parentTable" inherits="EzWoWInsetFrameTemplate">
+			<Frame name="$parentTable" parentKey="table" inherits="EzWoWLadderTable">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentTableHeader" relativePoint="BOTTOMLEFT" y="-4"/>
-					<Anchor point="BOTTOMRIGHT" x="-8" y="36"/>
+					<Anchor point="BOTTOMRIGHT" x="-8" y="38"/>
 				</Anchors>
-				<Frames>
-					<ScrollFrame name="$parentRows" parentKey="content" inherits="HybridScrollFrameTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" x="4" y="-4"/>
-							<Anchor point="BOTTOMRIGHT" x="-26" y="4"/>
-						</Anchors>
-						<Frames>
-							<Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate">
-								<Anchors>
-									<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="1" y="-18"/>
-									<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="1" y="12"/>
-								</Anchors>
-							</Slider>
-						</Frames>
-						<Scripts>
-							<OnShow function="EzWoWBattlegroundLadder_Update"/>
-						</Scripts>
-					</ScrollFrame>
-				</Frames>
 			</Frame>
-			<Button name="$parentLast" parentKey="buttonLast" inherits="UIPanelButtonTemplate">
-				<Size x="32" y="32"/>
+			<Frame name="$parentNavigation" parentKey="navigation" inherits="EzWoWLadderNavigation">
+				<Size x="200" y ="32"/>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-4" y="2"/>
+					<Anchor point="BOTTOMRIGHT" x="-6" y="4"/>
 				</Anchors>
-				<NormalTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Up"/>
-				<PushedTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Down"/>
-				<DisabledTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Disabled"/>
-				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
-				<Scripts>
-					<OnClick>EzWoWBattlegrounLadder_OpenPage(EzWoWBattlegroundLadder.totalPages)</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentNext" parentKey="buttonNext">
-				<Size x="32" y="32"/>
-				<Anchors>
-					<Anchor point="RIGHT" relativeTo="$parentLast" relativePoint="LEFT"/>
-				</Anchors>
-				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
-				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
-				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
-				<Scripts>
-					<OnClick function="EzWoWLadderButtonNext_OnClick"/>
-				</Scripts>
-			</Button>
-			<EditBox name="$parentPageNum" parentKey="pageNum">
-				<Size x="28" y="28"/>
-				<Anchors>
-					<Anchor point="RIGHT" relativeTo="$parentNext" relativePoint="LEFT"/>
-				</Anchors>
-				<Layers>
-					<Layer level="BACKGROUND">
-						<Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
-							<Size x="8" y="22"/>
-							<Anchors>
-								<Anchor point="LEFT" x="-5" y="0"/>
-							</Anchors>
-							<TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
-						</Texture>
-						<Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
-							<Size x="8" y="22"/>
-							<Anchors>
-								<Anchor point="RIGHT">
-									<Offset>
-										<AbsDimension x="0" y="0"/>
-									</Offset>
-								</Anchor>
-							</Anchors>
-							<TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
-						</Texture>
-						<Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
-							<Size x="10" y="22"/>
-							<Anchors>
-								<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
-								<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
-							</Anchors>
-							<TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
-						</Texture>
-					</Layer>
-				</Layers>
-				<FontString inherits="ChatFontNormal"/>
-				<Scripts>
-					<OnLoad>self:SetAutoFocus(false)</OnLoad>
-					<OnEditFocusLost function="EzWoWLadderPageNum_OnFocusLost"/>
-					<OnEscapePressed function="EzWoWLadderPageNum_OnEscapePressed"/>
-					<OnEnterPressed function="EzWoWLadderPageNum_OnEnterPressed"/>
-				</Scripts>
-			</EditBox>
-			<Button name="$parentPrev" parentKey="buttonPrev">
-				<Size x="32" y="32"/>
-				<Anchors>
-					<Anchor point="RIGHT" relativeTo="$parentPageNum" relativePoint="LEFT" x="-4"/>
-				</Anchors>
-				<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
-				<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
-				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
-				<Scripts>
-					<OnClick function="EzWoWLadderButtonPrev_OnClick"/>
-				</Scripts>
-			</Button>
-			<Button name="$parentFirst" parentKey="buttonFirst" inherits="UIPanelButtonTemplate" text="1">
-				<Size x="32" y="32"/>
-				<Anchors>
-					<Anchor point="RIGHT" relativeTo="$parentPrev" relativePoint="LEFT"/>
-				</Anchors>			
-				<NormalTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Up"/>
-				<PushedTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Down"/>
-				<DisabledTexture file="Interface\AddOns\ezWoW\Textures\LadderPageNumButton-Disabled"/>
-				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
-				<Scripts>
-					<OnClick>EzWoWLadder_OpenPage(self:GetParent(), 1)</OnClick>
-				</Scripts>
-			</Button>
+			</Frame>
 		</Frames>
 		<Scripts>
 			<OnLoad function="EzWoWBattlegroundLadder_OnLoad"/>
 			<OnShow function="EzWoWBattlegroundLadder_OnShow"/>
-			<OnMouseDown>self.pageNum:ClearFocus()</OnMouseDown>
+			<OnMouseDown>self.navigation.pageNum:ClearFocus()</OnMouseDown>
+			<OnUpdate function="EzWoWLadder_OnUpdate"/>
 		</Scripts>
 	</Frame>
 

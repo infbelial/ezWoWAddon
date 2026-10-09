@@ -117,22 +117,32 @@ function EzWoWLadder_SendRequest(self)
     local endPos = self.pageSize * self.currentPage
 
     ezWoW:SendMessage(string.format("%s_LADDER:%d,%d;", self.type, startPos, endPos))
+
+    self.responseTimer = 1
 end
 
-function EzWoWLadder_UpdateButtons(self)
-    if self.currentPage <= 1 then
-        self.buttonPrev:Disable()
-        self.buttonFirst:Disable()
+function EzWoWLadder_UpdateNaviagtion(self)
+    if self.totalPages == 1 then
+        self.navigation:Hide()
+        self.table:SetPoint("BOTTOMRIGHT", -8, 8)
     else
-        self.buttonPrev:Enable()
-        self.buttonFirst:Enable()
+        self.navigation:Show()
+        self.table:SetPoint("BOTTOMRIGHT", -8, 38)
+    end
+
+    if self.currentPage <= 1 then
+        self.navigation.prev:Disable()
+        self.navigation.first:Disable()
+    else
+        self.navigation.prev:Enable()
+        self.navigation.first:Enable()
     end
     if self.currentPage >= self.totalPages then
-        self.buttonNext:Disable()
-        self.buttonLast:Disable()
+        self.navigation.next:Disable()
+        self.navigation.last:Disable()
     else
-        self.buttonNext:Enable()
-        self.buttonLast:Enable()
+        self.navigation.next:Enable()
+        self.navigation.last:Enable()
     end
 end
 
@@ -141,14 +151,27 @@ function EzWoWLadder_OpenPage(self, currentPage)
         return
     end
     self.currentPage = currentPage
-    self.pageNum:SetText(string.format("%d", currentPage))
-    EzWoWLadder_UpdateButtons(self)
+    self.navigation.pageNum:SetText(string.format("%d", currentPage))
+    EzWoWLadder_UpdateNaviagtion(self)
     _G[self:GetName().."TableRowsScrollBar"]:SetValue(0)
-    EzWoWLadder_SendRequest(self)
+
+    self.table.content:Hide()
+
+    -- Server's limiting messages at a rate of 5 per 2 seconds (on a moment this comment was written)
+    -- So we need to do atleast something to be in this rate or UI will be unresponsive
+    local timenow = GetTime()
+
+    if self.lastRequest + 0.3 < timenow then
+        EzWoWLadder_SendRequest(self)
+    else
+        self.requestTimer = 0.2
+        self.table.loading:Show()
+    end
+    self.lastRequest = timenow
 end
 
 function EzWoWLadderButtonNext_OnClick(self)
-    local ladder = self:GetParent()
+    local ladder = self:GetParent():GetParent()
     if ladder.currentPage >= ladder.totalPages then
         return
     end
@@ -157,7 +180,7 @@ function EzWoWLadderButtonNext_OnClick(self)
 end
 
 function EzWoWLadderButtonPrev_OnClick(self)
-    local ladder = self:GetParent()
+    local ladder = self:GetParent():GetParent()
     if ladder.currentPage > ladder.totalPages then
         return
     end
@@ -166,7 +189,7 @@ function EzWoWLadderButtonPrev_OnClick(self)
 end
 
 function EzWoWLadderPageNum_OnFocusLost(self)
-    local ladder = self:GetParent()
+    local ladder = self:GetParent():GetParent()
     local num = tonumber(self:GetText())
     if num == nil or num < 1 then
         self:SetText(string.format("%d", ladder.currentPage))
@@ -176,7 +199,7 @@ function EzWoWLadderPageNum_OnFocusLost(self)
 end
 
 function EzWoWLadderPageNum_OnEnterPressed(self)
-    local ladder = self:GetParent()
+    local ladder = self:GetParent():GetParent()
     self:ClearFocus()
     local num = tonumber(self:GetText())
     if num == nil or num < 1 or num > ladder.totalPages then
@@ -187,15 +210,28 @@ end
 
 function EzWoWLadderPageNum_OnEscapePressed(self)
     self:ClearFocus()
-    self:SetText(string.format("%d", self:GetParent().currentPage))
+    self:SetText(string.format("%d", self:GetParent():GetParent().currentPage))
 end
 
-function EzWoWLadder_Refresh(self, startPos, endPos, total)
-    self.totalPages = math.ceil(total / self.pageSize)
-    self.buttonLast:SetFormattedText("%d", self.totalPages)
-    if self:IsVisible() then
-        EzWoWLadder_UpdateButtons(self)
-        _G[self:GetName().."TableRows"].update()
+-- This is OnUpdate UI script
+function EzWoWLadder_OnUpdate(self, diff)
+    if self.requestTimer > 0 then
+        if self.requestTimer <= diff then
+            EzWoWLadder_SendRequest(self)
+            self.requestTimer = 0
+        else
+            self.requestTimer = self.requestTimer - diff
+        end
+    end
+
+    -- Even with the client tricks it's possible that server gonna cut packet because of the limit
+    -- So just re-send request on a watchdog timer
+    if self.responseTimer > 0 then
+        if self.responseTimer <= diff then
+            EzWoWLadder_SendRequest(self)
+        else
+            self.responseTimer = self.responseTimer - diff
+        end
     end
 end
 
@@ -208,7 +244,8 @@ local function GetRankWidth(rank)
     return 24
 end
 
-function EzWoWLadder_Update(self)
+-- This is when we need to manually update UI (scrolling, switching panels)
+function EzWoWLadder_Update(self, forceUpdate)
     local scrollFrame = _G[self:GetName().."TableRows"]
     local offset = HybridScrollFrame_GetOffset(scrollFrame)
 
@@ -248,7 +285,7 @@ function EzWoWLadder_Update(self)
         else
             local player = players[playerIndex]
             row.index = playerIndex
-            if player.guid ~= row.guid then
+            if player.guid ~= row.guid or forceUpdate then
                 row.guid = player.guid
                 row.playerRank:SetWidth(rankWidth)
                 displayPlayer(row, player, selectionId)
@@ -263,7 +300,7 @@ function EzWoWLadder_Update(self)
         end
     end
 
-    local totalHeight = 24 * numPlayers
+    local totalHeight = 22 * numPlayers
 
     HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight)
 
@@ -303,6 +340,20 @@ function EzWoWLadder_Update(self)
         end
         displayPlayer(characterRow, ladderInfo)
     end
+end
+
+-- And this is when server responded on our request
+function EzWoWLadder_Refresh(self, startPos, endPos, total)
+    ezLog:Debug("EzWoWLadder_Refresh")
+    self.totalPages = math.ceil(total / self.pageSize)
+    self.navigation.last:SetFormattedText("%d", self.totalPages)
+    self.table.content:Show()
+    self.table.loading:Hide()
+    if self:IsVisible() then
+        EzWoWLadder_UpdateNaviagtion(self)
+        EzWoWLadder_Update(self, true)
+    end
+    self.responseTimer = 0
 end
 
 local function SetLadderTab(self, tab)
