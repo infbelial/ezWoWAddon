@@ -30,11 +30,11 @@ function EzWoWBattlegroundLadderPanel_OnShow(self)
         local hours = math.floor((duration / 86400) / 3600)
         local minutes = math.floor((duration % 3600) / 60)
         local seconds = duration % 60
-        seasonEnd = string.format(" (%d дней)", days)
+        seasonEnd = string.format(" (%d %s)", days, T.LADDER_DAYS)
     end
 
-    self:GetParent().title:SetFormattedText("Сезон %d", ezWoW.bgSeason.id)
-	self.seasonEnd:SetFormattedText("Закончится %s%s", date("%d-%m-%Y", ezWoW.bgSeason.endDate), seasonEnd)
+    self:GetParent().title:SetFormattedText("%s %d", T.LADDER_SEASON, ezWoW.bgSeason.id)
+	self.seasonEnd:SetFormattedText("%s %s%s", T.LADDER_NEXT_SEASON, date("%d-%m-%Y", ezWoW.bgSeason.endDate), seasonEnd)
 end
 
 function EzWoWBattlegroundLadderTab_OnClick(self)
@@ -127,6 +127,12 @@ function EzWoWBattlegroundHistory_Update()
     local history = ezWoW.bgHistory
     if history then
         numEntries = #history
+    end
+
+    if history and numEntries == 0 then
+        EzWoWBattlegroundHistoryBackgroundNoGames:Show()
+    else
+        EzWoWBattlegroundHistoryBackgroundNoGames:Hide()
     end
 
     local entryIndex = 0

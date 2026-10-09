@@ -1,3 +1,5 @@
+local T = ezText
+
 function EzWoWArenaLadderPanel_OnShow(self)
     if not self.initialized then
         local lastGameId = 0
@@ -29,10 +31,10 @@ function EzWoWArenaLadderPanel_OnShow(self)
         local hours = math.floor((duration / 86400) / 3600)
         local minutes = math.floor((duration % 3600) / 60)
         local seconds = duration % 60
-        seasonEnd = string.format(" (%d дней)", days)
+        seasonEnd = string.format(" (%d %s)", days, T.LADDER_DAYS)
     end
-    self:GetParent().title:SetFormattedText("Сезон %d", ezWoW.arenaSeason.id)
-	self.seasonEnd:SetFormattedText("Закончится %s%s", date("%d-%m-%Y", ezWoW.arenaSeason.endDate), seasonEnd)
+    self:GetParent().title:SetFormattedText("%s %d", T.LADDER_SEASON, ezWoW.arenaSeason.id)
+	self.seasonEnd:SetFormattedText("%s %s%s", T.LADDER_NEXT_SEASON, date("%d-%m-%Y", ezWoW.arenaSeason.endDate), seasonEnd)
 end
 
 function EzWoWArenaLadderTab_OnLoad(self)
@@ -144,6 +146,12 @@ function EzWoWArenaHistory_Update()
     local history = ezWoW.arenaHistory
     if history then
         numEntries = #history
+    end
+
+    if history and numEntries == 0 then
+        EzWoWArenaHistoryBackgroundNoGames:Show()
+    else
+        EzWoWArenaHistoryBackgroundNoGames:Hide()
     end
 
     local entryIndex = 0

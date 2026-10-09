@@ -21,6 +21,16 @@
 					<Anchor point="TOPLEFT" x="5" y="0"/>
 					<Anchor point="BOTTOMRIGHT" x="-5" y="8"/>
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentNoGames" inherits="EzWoWGameFontWhiteLarge" text="Вы не отыграли ни одной игры в данном сезоне">
+							<Size x="300" y="50"/>
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
 			</Frame>
 			<ScrollFrame name="$parentContent" parentKey="content" inherits="HybridScrollFrameTemplate">
 				<Anchors>

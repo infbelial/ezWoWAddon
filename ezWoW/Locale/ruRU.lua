@@ -1,15 +1,18 @@
 EZTEXT_DUNGEON_FINDER   = "Поиск подземелий"
 EZTEXT_RAID_FINDER      = "Поиск рейда"
 
-EZTEXT_CHARACTER    = "Персонаж"
-EZTEXT_RATING       = "Рейтинг"
-EZTEXT_WINS_LOSSES  = "Победы /\nПоражения"
-EZTEXT_DRAWS        = "Ничьи"
-EZTEXT_LEAVES       = "Покинуто"
-EZTEXT_KILLS        = "Убийства"
-EZTEXT_ASSISTS      = "Ассисты"
-EZTEXT_DEATHS       = "Смерти"
-EZTEXT_MMR          = "MMR"
+EZTEXT_LADDER           = "Ладдер"
+EZTEXT_LADDER_HISTORY   = "История игр"
+EZTEXT_LADDER_NO_GAMES  = "Вы не отыграли ни одной игры в данном сезоне"
+EZTEXT_CHARACTER        = "Персонаж"
+EZTEXT_RATING           = "Рейтинг"
+EZTEXT_WINS_LOSSES      = "Победы /\nПоражения"
+EZTEXT_DRAWS            = "Ничьи"
+EZTEXT_LEAVES           = "Покинуто"
+EZTEXT_KILLS            = "Убийства"
+EZTEXT_ASSISTS          = "Ассисты"
+EZTEXT_DEATHS           = "Смерти"
+EZTEXT_MMR              = "MMR"
 
 ezText = {}
 
@@ -152,6 +155,10 @@ T.MULTISPEC_RENAME                  = "Переименовать"
 T.MULTISPEC_REMOVE                  = "Удалить"
 T.MULTISPEC_RESET_TALENTS           = "Сбросить таланты"
 T.MULTISPEC_EMPTY                   = "Пусто"
+
+T.LADDER_SEASON                     = "Сезон"
+T.LADDER_NEXT_SEASON                = "Следующий сезон"
+T.LADDER_DAYS                       = "|4день:дня:дней;"
 
 
 function ezText:GetBattlegroundName(mapId)

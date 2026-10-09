@@ -6,6 +6,19 @@ end
 EZTEXT_DUNGEON_FINDER   = "Dungeon finder"
 EZTEXT_RAID_FINDER      = "Raid finder"
 
+EZTEXT_LADDER           = "Ladder"
+EZTEXT_LADDER_HISTORY   = "Games History"
+EZTEXT_LADDER_NO_GAMES  = "You haven't played any games in this season"
+EZTEXT_CHARACTER        = "Character"
+EZTEXT_RATING           = "Rating"
+EZTEXT_WINS_LOSSES      = "Wins /\nLosses"
+EZTEXT_DRAWS            = "Draws"
+EZTEXT_LEAVES           = "Leaves"
+EZTEXT_KILLS            = "Kills"
+EZTEXT_ASSISTS          = "Assists"
+EZTEXT_DEATHS           = "Deaths"
+EZTEXT_MMR              = "MMR"
+
 ezText = ezText or {}
 
 local T = ezText
@@ -148,6 +161,9 @@ T.MULTISPEC_REMOVE                  = "Remove"
 T.MULTISPEC_RESET_TALENTS           = "Reset talents"
 T.MULTISPEC_EMPTY                   = "Empty"
 
+T.LADDER_SEASON                     = "Season"
+T.LADDER_NEXT_SEASON                = "Next season"
+T.LADDER_DAYS                       = "|4day:days;"
 
 function ezText:GetBattlegroundName(mapId)
     if mapId == 30 then
