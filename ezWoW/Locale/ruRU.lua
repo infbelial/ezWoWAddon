@@ -120,11 +120,13 @@ T.OPT_ACCOUNTWIDE_PETS              = "Распространять питомц
 T.OPT_ACCOUNTWIDE_PETS_TOOLTIP      = "Если включено персонаж будет иметь доступ ко всем питомцам учетной записи.\nЕсли выключено - то только к питомцам выученным на данном персонаже"
 
 -- Arena options panel
-T.MENU_ARENA_TITLE                  = "Арена"
-T.MENU_ARENA_SUB_TEXT               = "Настройки гибридной очереди арены"
+T.MENU_ARENA_TITLE                  = "Арена и поля боя"
+T.MENU_ARENA_SUB_TEXT               = "Настройки арены и полей боя"
 T.OPT_ARENA_BRACKETS                = "Принимать участие в брекетах"
 T.OPT_ARENA_AGAINST_GROUPS          = "Играть против груп в соло"
-T.OPT_ARENA_ANNOUNCMENTS            = "Отображать анонсы арены"
+T.OPT_ARENA_ANNOUNCMENTS            = "Отображать анонсы очереди на арену"
+T.OPT_BG_ANNOUNCEMENTS              = "Отображать анонсы очереди на поля боя"
+T.OPT_BG_REPORT_RATING              = "Отображать полученный рейтинг и изменения позиции в ладдере по окночанию поля боя"
 T.BRACKETS_ALL                      = "Во всех"
 T.BRACKETS_3_2                      = "3x3, 2x2"
 T.BRACKETS_3_1                      = "3x3, 1x1"

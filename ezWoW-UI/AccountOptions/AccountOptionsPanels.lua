@@ -478,7 +478,7 @@ function EzWoWOptionArenaPlayAgainstGroups_InitDropDown(self)
 end
 
 
-function EzWoWOptionArenaAnnouncements_InitDropDown(self)
+function EzWoWOptionAnnouncements_InitDropDown(self)
     local info  = UIDropDownMenu_CreateInfo()
     info.text   = T.ANNOUNCE_WHEN_IN_QUEUE
     info.value  = 1

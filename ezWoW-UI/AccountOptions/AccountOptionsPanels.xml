@@ -683,7 +683,7 @@
 	<!-- Arena -->
 	<Frame name="EzWoWAccountOptionsArenaPanel" hidden="true" parent="EzWoWAccountOptionsFramePanelContainer">
 		<Attributes>
-			<Attribute name="category" type="string" value="ARENA"/>
+			<Attribute name="category" type="string" value="ARENA_AND_BG"/>
 		</Attributes>
 		<Layers>
 			<Layer level="ARTWORK">
@@ -732,7 +732,7 @@
 					</Layer>
 				</Layers>
 				<Scripts>
-					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_BRACKETS", "ARENA", 120)</OnLoad>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_BRACKETS", "ARENA_AND_BG", 120)</OnLoad>
 					<OnShow>
 						UIDropDownMenu_Initialize(self, EzWoWOptionArenaBrackets_InitDropDown)
 						UIDropDownMenu_Refresh(self, false, 1)
@@ -753,7 +753,7 @@
 					</Layer>
 				</Layers>
 				<Scripts>
-					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_AGAINST_GROUPS", "ARENA", 120)</OnLoad>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_AGAINST_GROUPS", "ARENA_AND_BG", 120)</OnLoad>
 					<OnShow>
 						UIDropDownMenu_Initialize(self, EzWoWOptionArenaPlayAgainstGroups_InitDropDown)
 						UIDropDownMenu_Refresh(self, false, 1)
@@ -776,13 +776,44 @@
 					</Layer>
 				</Layers>
 				<Scripts>
-					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_ANNOUNCMENTS", "ARENA", 120)</OnLoad>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "ARENA_ANNOUNCMENTS", "ARENA_AND_BG", 120)</OnLoad>
 					<OnShow>
-						UIDropDownMenu_Initialize(self, EzWoWOptionArenaAnnouncements_InitDropDown)
+						UIDropDownMenu_Initialize(self, EzWoWOptionAnnouncements_InitDropDown)
 						UIDropDownMenu_Refresh(self, false, 1)
 					</OnShow>
 				</Scripts>
 			</Frame>
+			<Frame name="EzWoWOptionBGAnnouncement" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" relativeTo="EzWoWOptionArenaAnnouncements" relativePoint="BOTTOMLEFT" y="-20"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentLabel" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+									<Offset x="21" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "BG_ANNOUNCEMENTS", "ARENA_AND_BG", 120)</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWOptionAnnouncements_InitDropDown)
+						UIDropDownMenu_Refresh(self, false, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<CheckButton name="EzWoWOptionBGReportRating" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionBGAnnouncement" relativePoint="BOTTOMLEFT" y="-4" x="16"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "BG_REPORT_RATING", "ARENA_AND_BG")</OnLoad>
+				</Scripts>
+			</CheckButton>
 		</Frames>
 	</Frame>
 
