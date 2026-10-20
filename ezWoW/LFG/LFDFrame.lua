@@ -371,6 +371,7 @@ end
 
 function LFDParentFrameTab_OnClick(self)
 	PanelTemplates_Tab_OnClick(self, LFDParentFrame)
+	PlaySound("igCharacterInfoTab")
 	if self:GetID() == 1 then
 		ShowLFD()
 	else
