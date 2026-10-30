@@ -79,6 +79,31 @@
 		</Scripts>
 	</Button>
 
+	<Frame name="LFDQueueFrameTypeDropDownRaid" parent="LFDQueueFrame" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+		<Anchors>
+			<Anchor point="TOPLEFT" x="131" y="-125"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentName" inherits="GameFontNormal" justifyH="RIGHT" text="CHOOSE_YOUR_DUNGEON">
+					<Size>
+						<AbsDimension x="115" y="24"/>
+					</Size>
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT">
+							<Offset>
+								<AbsDimension x="0" y="2"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnShow function="LFDQueueFrameTypeDropDownLFR_SetUp"/>
+		</Scripts>
+	</Frame>
+
 	<Frame name="LFDQueueFrameRaid" parent="LFDQueueFrame" setAllPoints="true" hidden="true">
 		<!--Size x="298" y="253"/-->
 		<Frames>
@@ -245,6 +270,7 @@
 		</Frames>
 		<Scripts>
 			<OnShow function="LFDQueueFrameRaid_UpdateFrame"/>
+			<OnLoad function="LFDQueueFrameRaid_OnLoad"/>
 		</Scripts>
 	</Frame>
 

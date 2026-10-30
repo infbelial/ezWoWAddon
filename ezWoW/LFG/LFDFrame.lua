@@ -1,4 +1,9 @@
 local LFR_ICECROWN_CITADEL = 5000
+local LFR_ULDUAR = 5001
+
+local function IsLFRDungeon(dungeonId)
+	return dungeonId and dungeonId >= LFR_ICECROWN_CITADEL and dungeonId <= LFR_ULDUAR
+end
 
 LFRProposal = nil
 LFRStatus = nil
@@ -40,6 +45,7 @@ function LFDDungeonReadyStatusGrouped_UpdateIcon(button, buttonRole)
 	end
 end
 
+-- override
 function LFDDungeonReadyPopup_Update()
 	local proposalExists, typeID, id, name, texture, role, hasResponded, totalEncounters, completedEncounters, numMembers, isLeader = GetLFGProposal();
 
@@ -54,7 +60,7 @@ function LFDDungeonReadyPopup_Update()
 	if ( hasResponded ) then
         LFDDungeonReadyStatus:Show();
         LFDDungeonReadyDialog:Hide();
-        if id == LFR_ICECROWN_CITADEL then
+        if IsLFRDungeon(id) then
             for i=1, NUM_LFD_MEMBERS do
                 _G["LFDDungeonReadyStatusPlayer"..i]:Hide()
             end
@@ -158,15 +164,17 @@ local function ShowLFD()
 	end
 	LFDQueueFrameTypeDropDown:Show()
 	LFDQueueFrameRaid:Hide()
+	LFDQueueFrameTypeDropDownRaid:Hide()
 end
 
 local function ShowLFR()
-	LFDQueueFrame.type = LFR_ICECROWN_CITADEL
+	LFDQueueFrame.type = LFDQueueFrameRaid.type
 
 	LFDQueueFrameTypeDropDown:Hide()
 	LFDQueueFrameSpecific:Hide()
 	LFDQueueFrameRandom:Hide()
 	LFDQueueFrameRaid:Show()
+	LFDQueueFrameTypeDropDownRaid:Show()
 
 	LFDQueueFrameRaid_UpdateFrame()
 end
@@ -234,13 +242,38 @@ local function FixElvUI(frame, dungeonID, i)
 end
 -- ELVUI END
 
+local function SelectRaid(self)
+	LFDQueueFrame_SetType(self.value)
+end
+
+function LFDQueueFrameTypeDropDownRaid_Initialize()
+	local info = UIDropDownMenu_CreateInfo();
+	info.text = GetLFGDungeonInfo(LFR_ICECROWN_CITADEL);
+	info.value = LFR_ICECROWN_CITADEL;
+	info.func = SelectRaid;
+	info.checked = LFDQueueFrameRaid.type == info.value;
+	UIDropDownMenu_AddButton(info);
+
+	info.text = GetLFGDungeonInfo(LFR_ULDUAR);
+	info.value = LFR_ULDUAR;
+	info.func = SelectRaid;
+	info.checked = LFDQueueFrameRaid.type == info.value;
+	UIDropDownMenu_AddButton(info);
+end
+
+function LFDQueueFrameTypeDropDownLFR_SetUp(self)
+	UIDropDownMenu_SetWidth(self, 180);
+	UIDropDownMenu_Initialize(self, LFDQueueFrameTypeDropDownRaid_Initialize);
+	UIDropDownMenu_SetSelectedValue(LFDQueueFrameTypeDropDownRaid, LFDQueueFrameRaid.type);
+end
+
 local NUM_LFR_RANDOM_REWARD_FRAMES = 1
 
 function LFDQueueFrameRaid_UpdateFrame()
 	local parentName = "LFDQueueFrameRaidScrollFrameChildFrame"
 	local parentFrame = _G[parentName];
 	
-	local dungeonID = LFDQueueFrame.type;
+	local dungeonID = LFDQueueFrameRaid.type;
 	
 	if ( not dungeonID ) then	--We haven't gotten info on available dungeons yet.
 		return;
@@ -258,10 +291,10 @@ function LFDQueueFrameRaid_UpdateFrame()
 	local experienceGained = experienceBase + experienceVar * numRandoms;
 
 	
-	local backgroundTexture = "Interface\\AddOns\\ezWoW\\Textures\\LFR-IcecrownCitadel"
+	local backgroundTexture = "Interface\\AddOns\\ezWoW\\Textures\\LFR-"..textureFilename
 	
 	if not LFDQueueFrameBackground:SetTexture(backgroundTexture) then
-		LFDQueueFrameBackground:SetTexture("Interface\\LFGFrame\\UI-LFG-BACKGROUND-QUESTPAPER");
+		LFDQueueFrameBackground:SetTexture("Interface\\LFGFrame\\UI-LFG-BACKGROUND-QUESTPAPER")
 	end
 	
 	local lastFrame = parentFrame.rewardsLabel;
@@ -368,6 +401,10 @@ function LFDQueueFrameRaid_UpdateFrame()
 	parentFrame.spacer:SetPoint("TOPLEFT", lastFrame, "BOTTOMLEFT", 0, -10);
 end
 
+function LFDQueueFrameRaid_OnLoad(self)
+	self.type = LFR_ICECROWN_CITADEL
+end
+
 
 function LFDParentFrameTab_OnClick(self)
 	PanelTemplates_Tab_OnClick(self, LFDParentFrame)
@@ -379,6 +416,7 @@ function LFDParentFrameTab_OnClick(self)
 	end
 end
 
+-- override
 function LFDFrame_OnEvent(self, event, ...)
 	if ( event == "LFG_PROPOSAL_UPDATE" ) then
 		LFRProposal = C_ezAPI.getBucketData("LFR_PROPOSAL")
@@ -414,7 +452,7 @@ function LFDFrame_OnEvent(self, event, ...)
 	elseif ( event == "LFG_ROLE_UPDATE" ) then
 		LFG_UpdateRoleCheckboxes();
 	elseif ( event == "LFG_UPDATE_RANDOM_INFO" ) then
-		if ( not LFDQueueFrame.type or (type(LFDQueueFrame.type) == "number" and not IsLFGDungeonJoinable(LFDQueueFrame.type) and LFDQueueFrame.type ~= LFR_ICECROWN_CITADEL) ) then
+		if ( not LFDQueueFrame.type or (type(LFDQueueFrame.type) == "number" and not IsLFGDungeonJoinable(LFDQueueFrame.type) and not IsLFRDungeon(LFDQueueFrame.type)) ) then
 			LFDQueueFrame.type = GetRandomDungeonBestChoice();
 			UIDropDownMenu_SetSelectedValue(LFDQueueFrameTypeDropDown, LFDQueueFrame.type);
 		end
@@ -442,7 +480,7 @@ end
 LFDParentFrame:SetScript("OnEvent", LFDFrame_OnEvent)
 
 hooksecurefunc("LFDQueueFrameRandom_UpdateFrame", function()
-	if LFDQueueFrame.type ~= LFR_ICECROWN_CITADEL then
+	if not IsLFRDungeon(LFDQueueFrame.type) then
 		previousType = LFDQueueFrame.type
 	end
 end)
@@ -451,6 +489,26 @@ hooksecurefunc("LFDQueueFrame_SetTypeSpecificDungeon", function()
 	previousType = LFDQueueFrame.type
 end)
 
+-- override
+function LFDQueueFrame_SetType(value)
+	LFDQueueFrame.type = value
+	local raid = IsLFRDungeon(value)
+	if raid then
+		UIDropDownMenu_SetSelectedValue(LFDQueueFrameTypeDropDownRaid, value)
+	else
+		UIDropDownMenu_SetSelectedValue(LFDQueueFrameTypeDropDown, value)
+	end
+	
+	if value == "specific" then
+		LFDQueueFrame_SetTypeSpecificDungeon()
+	elseif raid then
+		LFDQueueFrameRaid.type = value
+		LFDQueueFrameRaid_UpdateFrame()
+	else
+		LFDQueueFrame_SetTypeRandomDungeon()
+		LFDQueueFrameRandom_UpdateFrame()
+	end
+end
 
 local NUM_TANKS = 1;
 local NUM_HEALERS = 1;
@@ -568,12 +626,13 @@ LFDQueueFrameFindGroupButton:SetScript("OnClick", function()
 		LeaveLFG();
 	else
 		if LFDQueueFrameRaid:IsShown() == 1 then
-			LFDQueueFrame.type = LFR_ICECROWN_CITADEL
+			LFDQueueFrame.type = LFDQueueFrameRaid.type
 		end
 		LFDQueueFrame_Join();
 	end
 end)
 
+-- override
 function LFDFrame_UpdateBackfill(forceUpdate)
 	local canBackfill = CanPartyLFGBackfill()
 	if LFRStatus then
@@ -583,7 +642,7 @@ function LFDFrame_UpdateBackfill(forceUpdate)
 	if canBackfill then
 		local name
 		if LFRStatus then
-			name = GetLFGDungeonInfo(LFR_ICECROWN_CITADEL)
+			name = GetLFGDungeonInfo(LFRStatus.dungeonId)
 		else
 			name = GetPartyLFGBackfillInfo();
 		end
@@ -600,7 +659,7 @@ end
 local function ContinueLFG()
 	if LFRStatus then
 		ClearAllLFGDungeons();
-		SetLFGDungeon(LFR_ICECROWN_CITADEL);
+		SetLFGDungeon(LFRStatus.dungeonId);
 		JoinLFG();
 	else
 		PartyLFGStartBackfill()
