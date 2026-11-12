@@ -4,7 +4,6 @@ local damageIcon = "|TInterface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES.blp:16:16:0
 
 function LFGEventFrame_OnEvent(self, event, ...)
 	if ( event == "LFG_UPDATE" ) then
-		LFRStatus = C_ezAPI.getBucketData("LFR_STATUS")
 		LFG_UpdateQueuedList();
 	elseif ( event == "PLAYER_ENTERING_WORLD" ) then
 		LFG_UpdateQueuedList();
@@ -17,11 +16,11 @@ function LFGEventFrame_OnEvent(self, event, ...)
 		LFG_UpdateFramesIfShown();
 
 		local canBackfill = CanPartyLFGBackfill()
-		if LFRStatus then
+		if LFRStatus.dungeonId ~= 0 then
 			local numMembers = GetNumRaidMembers()
 			-- for some reason LFG_UPDATE with STATUS_NONE doesn't invoke event? may be we do it wrong on server side?
 			if numMembers == 0 then
-				LFRStatus = nil
+				LFRStatus.dungeonId = 0
 			else
 				canBackfill = numMembers < LFRStatus.tankSlots + LFRStatus.healerSlots + LFRStatus.damageSlots
 			end

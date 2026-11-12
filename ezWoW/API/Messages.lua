@@ -148,6 +148,24 @@ function ezWoW:HandleSubscriptions(msg)
     return true
 end
 
+function ezWoW:HanldeSetObject(msg)
+    local objectName = ReadIdentifier(msg, ":")
+    local object = _G[objectName]
+
+    repeat
+        local key, value = ReadKeyValue(msg, ";")
+        if not key then
+            return false
+        end
+        local num = tonumber(value)
+        if num then
+            value = num
+        end
+        object[key] = value
+    until msg.startpos >= msg.endpos
+    return true
+end
+
 local handlers =
 {
     ["INIT"]            = ezWoW.HandleInit,
@@ -156,6 +174,7 @@ local handlers =
     ["SET_OPT_DEF"]     = ezWoW.HandleDefaultOptions,
     ["SET_RATE"]        = ezWoW.HandleRates,
     ["SET_SUB"]         = ezWoW.HandleSubscriptions,
+    ["SET_OBJECT"]      = ezWoW.HanldeSetObject,
 }
 
 function ezWoW:HandleMessage(message)

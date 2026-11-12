@@ -5,8 +5,8 @@ local function IsLFRDungeon(dungeonId)
 	return dungeonId and dungeonId >= LFR_ICECROWN_CITADEL and dungeonId <= LFR_ULDUAR
 end
 
-LFRProposal = nil
-LFRStatus = nil
+LFRProposal = { }
+LFRStatus = { dungeonId = 0 }
 
 function LFDDungeonReadyStatusGrouped_UpdateIcon(button, buttonRole)
 	button.texture:SetTexCoord(GetTexCoordsForRole(buttonRole));
@@ -115,7 +115,7 @@ function LFDDungeonReadyPopup_Update()
 			end
 
 			-- Probably should move to LFRProposal itself
-			if LFRProposal then
+			if IsLFRDungeon(id) then
 				totalEncounters = 12
 			end
 			
@@ -419,7 +419,6 @@ end
 -- override
 function LFDFrame_OnEvent(self, event, ...)
 	if ( event == "LFG_PROPOSAL_UPDATE" ) then
-		LFRProposal = C_ezAPI.getBucketData("LFR_PROPOSAL")
 		LFDDungeonReadyPopup_Update();
 	elseif ( event == "LFG_PROPOSAL_SHOW" ) then
 		LFDDungeonReadyPopup.closeIn = nil;
@@ -516,7 +515,6 @@ local NUM_DAMAGERS = 3;
 
 function LFDSearchStatus_OnEvent(self, event, ...)
 	if ( event == "LFG_QUEUE_STATUS_UPDATE" ) then
-		LFRStatus = C_ezAPI.getBucketData("LFR_STATUS")
 		LFDSearchStatus_Update();
 	end
 end
@@ -530,7 +528,7 @@ function LFDSearchStatus_Update()
 	local LFDSearchStatus = LFDSearchStatus;
 	local hasData, leaderNeeds, tankNeeds, healerNeeds, dpsNeeds, instanceType, instanceName, averageWait, tankWait, healerWait, damageWait, myWait, queuedTime = GetLFGQueueStats();
 	
-	if LFRStatus ~= nil then
+	if LFRStatus.dungeonId ~= 0 then
 		LFDSearchStatusTank1:Hide()
 		LFDSearchStatusHealer1:Hide()
 		LFDSearchStatusDamage1:Hide()
@@ -555,7 +553,7 @@ function LFDSearchStatus_Update()
 	LFDSearchStatus_UpdateRoles()
 
 	if ( not hasData ) then
-		if LFRStatus ~= nil then
+		if LFRStatus.dungeonId ~= 0 then
 			LFDSearchStatus:SetHeight(165);
 			LFDSearchStatusPlayer_SetFoundLFR(LFDSearchStatusTankLFR, 0, LFRStatus.tankSlots)
 			LFDSearchStatusPlayer_SetFoundLFR(LFDSearchStatusHealerLFR, 0, LFRStatus.healerSlots)
@@ -575,7 +573,7 @@ function LFDSearchStatus_Update()
 		return;
 	end
 
-	if LFRStatus ~= nil then
+	if LFRStatus.dungeonId ~= 0 then
 		LFDSearchStatusPlayer_SetFoundLFR(LFDSearchStatusTankLFR, LFRStatus.tankQueue, LFRStatus.tankSlots)
 		LFDSearchStatusPlayer_SetFoundLFR(LFDSearchStatusHealerLFR, LFRStatus.healerQueue, LFRStatus.healerSlots)
 		LFDSearchStatusPlayer_SetFoundLFR(LFDSearchStatusDamageLFR, LFRStatus.damageQueue, LFRStatus.damageSlots)
@@ -598,7 +596,7 @@ function LFDSearchStatus_Update()
 	LFDSearchStatus.elapsedWait:Show();
 
 	local padding = 0
-	if LFRStatus ~= nil then
+	if LFRStatus.dungeonId ~= 0 then
 		padding = 20
 	end
 
@@ -635,13 +633,13 @@ end)
 -- override
 function LFDFrame_UpdateBackfill(forceUpdate)
 	local canBackfill = CanPartyLFGBackfill()
-	if LFRStatus then
+	if LFRStatus.dungeonId ~= 0 then
 		canBackfill = GetNumRaidMembers() < LFRStatus.tankSlots + LFRStatus.healerSlots + LFRStatus.damageSlots
 	end
 
 	if canBackfill then
 		local name
-		if LFRStatus then
+		if LFRStatus.dungeonId ~= 0 then
 			name = GetLFGDungeonInfo(LFRStatus.dungeonId)
 		else
 			name = GetPartyLFGBackfillInfo();
@@ -657,7 +655,7 @@ function LFDFrame_UpdateBackfill(forceUpdate)
 end
 
 local function ContinueLFG()
-	if LFRStatus then
+	if LFRStatus.dungeonId ~= 0 then
 		ClearAllLFGDungeons();
 		SetLFGDungeon(LFRStatus.dungeonId);
 		JoinLFG();
@@ -676,15 +674,3 @@ StaticPopupDialogs["LFG_OFFER_CONTINUE"].OnAccept = function(self)
 end
 
 tinsert(UnitPopupMenus["RAID_PLAYER"], 9, "VOTE_TO_KICK")
-
-ezWoW:RegisterHandler("CONFIG", function(serverConfig)
-	if serverConfig then
-		if serverConfig.lfrEnabled then
-			LFDParentFrameTab1:Show()
-			LFDParentFrameTab2:Show()
-		else
-			LFDParentFrameTab1:Hide()
-			LFDParentFrameTab2:Hide()
-		end
-	end
-end)
