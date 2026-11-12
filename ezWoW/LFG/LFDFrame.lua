@@ -1,12 +1,15 @@
 local LFR_ICECROWN_CITADEL = 5000
 local LFR_ULDUAR = 5001
 
+enabledDungeons = { [LFR_ICECROWN_CITADEL] = true, [LFR_ULDUAR] = true }
+
 local function IsLFRDungeon(dungeonId)
 	return dungeonId and dungeonId >= LFR_ICECROWN_CITADEL and dungeonId <= LFR_ULDUAR
 end
 
 LFRProposal = { }
 LFRStatus = { dungeonId = 0 }
+
 
 function LFDDungeonReadyStatusGrouped_UpdateIcon(button, buttonRole)
 	button.texture:SetTexCoord(GetTexCoordsForRole(buttonRole));
@@ -247,18 +250,24 @@ local function SelectRaid(self)
 end
 
 function LFDQueueFrameTypeDropDownRaid_Initialize()
-	local info = UIDropDownMenu_CreateInfo();
-	info.text = GetLFGDungeonInfo(LFR_ICECROWN_CITADEL);
-	info.value = LFR_ICECROWN_CITADEL;
-	info.func = SelectRaid;
-	info.checked = LFDQueueFrameRaid.type == info.value;
-	UIDropDownMenu_AddButton(info);
+	local info
+	if enabledDungeons[LFR_ICECROWN_CITADEL] then
+		info = UIDropDownMenu_CreateInfo()
+		info.text = GetLFGDungeonInfo(LFR_ICECROWN_CITADEL)
+		info.value = LFR_ICECROWN_CITADEL
+		info.func = SelectRaid
+		info.checked = LFDQueueFrameRaid.type == info.value
+		UIDropDownMenu_AddButton(info)
+	end
 
-	info.text = GetLFGDungeonInfo(LFR_ULDUAR);
-	info.value = LFR_ULDUAR;
-	info.func = SelectRaid;
-	info.checked = LFDQueueFrameRaid.type == info.value;
-	UIDropDownMenu_AddButton(info);
+	if enabledDungeons[LFR_ULDUAR] then
+		info = UIDropDownMenu_CreateInfo()
+		info.text = GetLFGDungeonInfo(LFR_ULDUAR)
+		info.value = LFR_ULDUAR
+		info.func = SelectRaid
+		info.checked = LFDQueueFrameRaid.type == info.value
+		UIDropDownMenu_AddButton(info)
+	end
 end
 
 function LFDQueueFrameTypeDropDownLFR_SetUp(self)
@@ -674,3 +683,26 @@ StaticPopupDialogs["LFG_OFFER_CONTINUE"].OnAccept = function(self)
 end
 
 tinsert(UnitPopupMenus["RAID_PLAYER"], 9, "VOTE_TO_KICK")
+
+ezWoW:RegisterHandler("CONFIG", function(serverConfig)
+	if serverConfig then
+		if serverConfig.lfrEnabled then
+			LFDParentFrameTab1:Show()
+			LFDParentFrameTab2:Show()
+		else
+			LFDParentFrameTab1:Hide()
+			LFDParentFrameTab2:Hide()
+		end
+
+		for key, _ in pairs(enabledDungeons) do
+			enabledDungeons[key] = false
+		end
+
+		if serverConfig.lfrDungeons then
+			for i=1, #serverConfig.lfrDungeons do
+
+				enabledDungeons[serverConfig.lfrDungeons[i]] = true
+			end
+		end
+	end
+end)
