@@ -166,6 +166,19 @@ function ezWoW:HanldeSetObject(msg)
     return true
 end
 
+function ezWoW:HandleLFRConfig(msg)
+    local config = {}
+    repeat
+        local id = ReadNumber(msg, ";")
+        if not id then
+            return false
+        end
+        config[#config + 1] = id
+    until msg.startpos >= msg.endpos
+    self:CallHandlers("LFR_CONFIG", config)
+    return true
+end
+
 local handlers =
 {
     ["INIT"]            = ezWoW.HandleInit,
@@ -175,6 +188,7 @@ local handlers =
     ["SET_RATE"]        = ezWoW.HandleRates,
     ["SET_SUB"]         = ezWoW.HandleSubscriptions,
     ["SET_OBJECT"]      = ezWoW.HanldeSetObject,
+    ["LFR_CONFIG"]      = ezWoW.HandleLFRConfig,
 }
 
 function ezWoW:HandleMessage(message)

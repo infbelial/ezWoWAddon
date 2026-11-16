@@ -1,10 +1,13 @@
+local LFR_RANDOM = 4999
 local LFR_ICECROWN_CITADEL = 5000
 local LFR_ULDUAR = 5001
 
-enabledDungeons = { [LFR_ICECROWN_CITADEL] = true, [LFR_ULDUAR] = true }
+local enabledDungeons = { [LFR_RANDOM] = true, [LFR_ICECROWN_CITADEL] = true, [LFR_ULDUAR] = true }
+local enabledDungeonsCount = 0
 
 local function IsLFRDungeon(dungeonId)
-	return dungeonId and dungeonId >= LFR_ICECROWN_CITADEL and dungeonId <= LFR_ULDUAR
+	local id = tonumber(dungeonId)
+	return id and id >= LFR_RANDOM and id <= LFR_ULDUAR
 end
 
 LFRProposal = { }
@@ -92,6 +95,14 @@ function LFDDungeonReadyPopup_Update()
 	
 		local LFDDungeonReadyDialog = LFDDungeonReadyDialog; --Make a local copy.
 		
+		if IsLFRDungeon(LFRProposal.dungeonId) then
+			print("LFRProposal.dungeonId ", LFRProposal.dungeonId)
+			local name2, _, _, _, _, _, _, _, _, texture2 = GetLFGDungeonInfo(LFRProposal.dungeonId)
+			name = name2
+			texture = texture2
+			typeID = 1
+		end
+
 		if ( typeID == TYPEID_RANDOM_DUNGEON ) then
 			LFDDungeonReadyDialog.background:SetTexture("Interface\\LFGFrame\\UI-LFG-BACKGROUND-RANDOMDUNGEON");
 			
@@ -117,14 +128,14 @@ function LFDDungeonReadyPopup_Update()
 				LFDDungeonReadyDialog.background:SetTexture("Interface\\LFGFrame\\UI-LFG-BACKGROUND-Deadmines");	--DEBUG FIXME Default probably shouldn't be Deadmines
 			end
 
-			-- Probably should move to LFRProposal itself
-			if IsLFRDungeon(id) then
-				totalEncounters = 12
-			end
-			
+		
 			LFDDungeonReadyDialog.label:SetText(SPECIFIC_DUNGEON_IS_READY);
-			LFDDungeonReadyDialog_UpdateInstanceInfo(name, completedEncounters, totalEncounters);
+			LFDDungeonReadyDialog_UpdateInstanceInfo(name, completedEncounters, 0);
 			LFDDungeonReadyDialog.instanceInfo:Show();
+
+			if IsLFRDungeon(id) then
+				LFDDungeonReadyDialogInstanceInfoFrame.statusText:SetText("")
+			end
 		end
 
 		
@@ -177,7 +188,12 @@ local function ShowLFR()
 	LFDQueueFrameSpecific:Hide()
 	LFDQueueFrameRandom:Hide()
 	LFDQueueFrameRaid:Show()
-	LFDQueueFrameTypeDropDownRaid:Show()
+
+	if enabledDungeonsCount > 1 then
+		LFDQueueFrameTypeDropDownRaid:Show()
+	else
+		LFDQueueFrameTypeDropDownRaid:Hide()
+	end
 
 	LFDQueueFrameRaid_UpdateFrame()
 end
@@ -250,20 +266,12 @@ local function SelectRaid(self)
 end
 
 function LFDQueueFrameTypeDropDownRaid_Initialize()
-	local info
-	if enabledDungeons[LFR_ICECROWN_CITADEL] then
-		info = UIDropDownMenu_CreateInfo()
-		info.text = GetLFGDungeonInfo(LFR_ICECROWN_CITADEL)
-		info.value = LFR_ICECROWN_CITADEL
-		info.func = SelectRaid
-		info.checked = LFDQueueFrameRaid.type == info.value
-		UIDropDownMenu_AddButton(info)
-	end
+	local dungeons = { LFR_RANDOM, LFR_ICECROWN_CITADEL, LFR_ULDUAR }
 
-	if enabledDungeons[LFR_ULDUAR] then
-		info = UIDropDownMenu_CreateInfo()
-		info.text = GetLFGDungeonInfo(LFR_ULDUAR)
-		info.value = LFR_ULDUAR
+	for i = 1, #dungeons do
+		local info = UIDropDownMenu_CreateInfo()
+		info.text = GetLFGDungeonInfo(dungeons[i])
+		info.value = dungeons[i]
 		info.func = SelectRaid
 		info.checked = LFDQueueFrameRaid.type == info.value
 		UIDropDownMenu_AddButton(info)
@@ -411,7 +419,7 @@ function LFDQueueFrameRaid_UpdateFrame()
 end
 
 function LFDQueueFrameRaid_OnLoad(self)
-	self.type = LFR_ICECROWN_CITADEL
+	self.type = LFR_RANDOM
 end
 
 
@@ -684,25 +692,48 @@ end
 
 tinsert(UnitPopupMenus["RAID_PLAYER"], 9, "VOTE_TO_KICK")
 
-ezWoW:RegisterHandler("CONFIG", function(serverConfig)
-	if serverConfig then
-		if serverConfig.lfrEnabled then
-			LFDParentFrameTab1:Show()
-			LFDParentFrameTab2:Show()
-		else
-			LFDParentFrameTab1:Hide()
-			LFDParentFrameTab2:Hide()
+ezWoW:RegisterHandler("LFR_CONFIG", function(config)
+	print("here")
+	for key, _ in pairs(enabledDungeons) do
+		enabledDungeons[key] = false
+	end
+
+	for i=1, #config do
+		enabledDungeons[config[i]] = true
+	end
+
+	enabledDungeonsCount = 0
+	for key, _ in pairs(enabledDungeons) do
+		if enabledDungeons[key] then
+			enabledDungeonsCount = enabledDungeonsCount + 1
 		end
+	end
 
-		for key, _ in pairs(enabledDungeons) do
-			enabledDungeons[key] = false
-		end
+	print(enabledDungeonsCount)
 
-		if serverConfig.lfrDungeons then
-			for i=1, #serverConfig.lfrDungeons do
+	if enabledDungeonsCount > 0 then
+		LFDParentFrameTab1:Show()
+		LFDParentFrameTab2:Show()
 
-				enabledDungeons[serverConfig.lfrDungeons[i]] = true
+		if not enabledDungeons[LFDQueueFrameRaid.type] then
+			for key, _ in pairs(enabledDungeons) do
+				if enabledDungeons[key] then
+					LFDQueueFrameRaid.type = key
+					break
+				end
 			end
 		end
+
+		if enabledDungeonsCount > 1 then
+			LFDQueueFrameTypeDropDownRaid:Show()
+		else
+			LFDQueueFrameTypeDropDownRaid:Hide()
+		end
+
+		LFDQueueFrameRaid_UpdateFrame()
+
+	else
+		LFDParentFrameTab1:Hide()
+		LFDParentFrameTab2:Hide()
 	end
 end)
