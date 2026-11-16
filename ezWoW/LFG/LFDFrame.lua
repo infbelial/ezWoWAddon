@@ -96,7 +96,6 @@ function LFDDungeonReadyPopup_Update()
 		local LFDDungeonReadyDialog = LFDDungeonReadyDialog; --Make a local copy.
 		
 		if IsLFRDungeon(LFRProposal.dungeonId) then
-			print("LFRProposal.dungeonId ", LFRProposal.dungeonId)
 			local name2, _, _, _, _, _, _, _, _, texture2 = GetLFGDungeonInfo(LFRProposal.dungeonId)
 			name = name2
 			texture = texture2
@@ -693,7 +692,6 @@ end
 tinsert(UnitPopupMenus["RAID_PLAYER"], 9, "VOTE_TO_KICK")
 
 ezWoW:RegisterHandler("LFR_CONFIG", function(config)
-	print("here")
 	for key, _ in pairs(enabledDungeons) do
 		enabledDungeons[key] = false
 	end
@@ -708,8 +706,6 @@ ezWoW:RegisterHandler("LFR_CONFIG", function(config)
 			enabledDungeonsCount = enabledDungeonsCount + 1
 		end
 	end
-
-	print(enabledDungeonsCount)
 
 	if enabledDungeonsCount > 0 then
 		LFDParentFrameTab1:Show()
