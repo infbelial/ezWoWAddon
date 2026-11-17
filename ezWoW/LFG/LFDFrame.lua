@@ -721,7 +721,9 @@ ezWoW:RegisterHandler("LFR_CONFIG", function(config)
 		end
 
 		if enabledDungeonsCount > 1 then
-			LFDQueueFrameTypeDropDownRaid:Show()
+			if (LFDQueueFrameRaid:IsShown()) then
+				LFDQueueFrameTypeDropDownRaid:Show()
+			end
 		else
 			LFDQueueFrameTypeDropDownRaid:Hide()
 		end
