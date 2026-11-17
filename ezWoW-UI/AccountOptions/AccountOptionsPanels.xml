@@ -677,6 +677,14 @@
 					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "ACCOUNTWIDE_PETS", "COLLECTIONS")</OnLoad>
 				</Scripts>
 			</CheckButton>
+			<CheckButton name="EzWoWOptionAccountWideMountsIronman" inherits="EzWoWOptionsCheckButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionAccountWidePets" relativePoint="BOTTOMLEFT" y="-4"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "ACCOUNTWIDE_MOUNTS_IRON", "COLLECTIONS")</OnLoad>
+				</Scripts>
+			</CheckButton>
 		</Frames>
 	</Frame>
 

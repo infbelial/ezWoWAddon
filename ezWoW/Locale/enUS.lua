@@ -123,6 +123,8 @@ T.OPT_ACCOUNTWIDE_MOUNTS            = "Use account wide mounts"
 T.OPT_ACCOUNTWIDE_MOUNTS_TOOLTIP    = "If enabled your character will have access to all available mounts from this account.\nIf disabled - only to mounts learned on this character"
 T.OPT_ACCOUNTWIDE_PETS              = "Use account wide pets"
 T.OPT_ACCOUNTWIDE_PETS_TOOLTIP      = "If enabled your character will have access to all available pets from this account.\nIf disabled - only to pets learned on this character"
+T.OPT_ACCOUNTWIDE_MOUNTS_IRON       = "Enable mount collection for Ironman characters"
+T.OPT_ACCOUNTWIDE_MOUNTS_IRON_TOOLTIP = "If enabled allows Ironman characters to use most mounts from the account collection.\nDoes NOT affect gameplay aspect of the challenge, speed and ability to fly depends on actually owned mounts"
 
 -- Arena options panel
 T.MENU_ARENA_TITLE                  = "Arena and BG"
