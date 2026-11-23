@@ -692,6 +692,8 @@ end
 tinsert(UnitPopupMenus["RAID_PLAYER"], 9, "VOTE_TO_KICK")
 
 ezWoW:RegisterHandler("LFR_CONFIG", function(config)
+	-- FIXME
+	config = { 4999 }
 	for key, _ in pairs(enabledDungeons) do
 		enabledDungeons[key] = false
 	end
