@@ -839,7 +839,7 @@
 			</Frame>
 			<CheckButton name="EzWoWOptionBGReportRating" inherits="EzWoWOptionsCheckButton">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionBGAnnouncement" relativePoint="BOTTOMLEFT" y="-4" x="16"/>
+					<Anchor point="TOPLEFT" relativeTo="EzWoWOptionBGAnnouncements" relativePoint="BOTTOMLEFT" y="-4" x="16"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>EzWoWOptionsCheckButton_OnLoad(self, "BG_REPORT_RATING", "ARENA_AND_BG")</OnLoad>
