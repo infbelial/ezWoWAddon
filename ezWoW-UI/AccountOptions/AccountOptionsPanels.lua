@@ -497,3 +497,23 @@ function EzWoWOptionAnnouncements_InitDropDown(self)
     info.func   = function() SelectDropDownValue(self, 3) end
     UIDropDownMenu_AddButton(info)
 end
+
+function EzWoWOptionBGAnnouncements_InitDropDown(self)
+    local info  = UIDropDownMenu_CreateInfo()
+    info.text = T.BG_ANNOUNCE_SAME_AS_QUEUE
+    info.value = 0
+    info.func = function() SelectDropDownValue(self, 0) end
+    UIDropDownMenu_AddButton(info)
+
+    info  = UIDropDownMenu_CreateInfo()
+    info.text   = T.ANNOUNCE_ALWAYS
+    info.value  = 1
+    info.func   = function() SelectDropDownValue(self, 1) end
+    UIDropDownMenu_AddButton(info)
+
+    info  = UIDropDownMenu_CreateInfo()
+    info.text   = T.ANNOUNCE_NEVER
+    info.value  = 2
+    info.func   = function() SelectDropDownValue(self, 2) end
+    UIDropDownMenu_AddButton(info)
+end

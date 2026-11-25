@@ -791,7 +791,7 @@
 					</OnShow>
 				</Scripts>
 			</Frame>
-			<Frame name="EzWoWOptionBGAnnouncement" inherits="UIDropDownMenuTemplate">
+			<Frame name="EzWoWOptionBGQueueAnnouncements" inherits="UIDropDownMenuTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" x="0" relativeTo="EzWoWOptionArenaAnnouncements" relativePoint="BOTTOMLEFT" y="-20"/>
 				</Anchors>
@@ -810,6 +810,29 @@
 					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "BG_ANNOUNCEMENTS", "ARENA_AND_BG", 120)</OnLoad>
 					<OnShow>
 						UIDropDownMenu_Initialize(self, EzWoWOptionAnnouncements_InitDropDown)
+						UIDropDownMenu_Refresh(self, false, 1)
+					</OnShow>
+				</Scripts>
+			</Frame>
+			<Frame name="EzWoWOptionBGAnnouncements" inherits="UIDropDownMenuTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" relativeTo="EzWoWOptionBGQueueAnnouncements" relativePoint="BOTTOMLEFT" y="-20"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentLabel" inherits="GameFontNormal">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+									<Offset x="21" y="0"/>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>EzWoWOptionsDropDown_OnLoad(self, "BG_ANNOUNCEMENTS_GAMES", "ARENA_AND_BG", 120)</OnLoad>
+					<OnShow>
+						UIDropDownMenu_Initialize(self, EzWoWOptionBGAnnouncements_InitDropDown)
 						UIDropDownMenu_Refresh(self, false, 1)
 					</OnShow>
 				</Scripts>

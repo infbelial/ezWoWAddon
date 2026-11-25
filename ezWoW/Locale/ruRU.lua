@@ -128,6 +128,7 @@ T.OPT_ARENA_BRACKETS                = "Принимать участие в бр
 T.OPT_ARENA_AGAINST_GROUPS          = "Играть против груп в соло"
 T.OPT_ARENA_ANNOUNCMENTS            = "Отображать анонсы очереди на арену"
 T.OPT_BG_ANNOUNCEMENTS              = "Отображать анонсы очереди на поля боя"
+T.OPT_BG_ANNOUNCEMENTS_GAMES        = "Отображать анонсы о начале/конце полей боя"
 T.OPT_BG_REPORT_RATING              = "Отображать полученный рейтинг и изменения позиции в ладдере по окночанию поля боя"
 T.BRACKETS_ALL                      = "Во всех"
 T.BRACKETS_3_2                      = "3x3, 2x2"
@@ -139,6 +140,7 @@ T.GROUPS_3                          = "Только 3x3"
 T.ANNOUNCE_WHEN_IN_QUEUE            = "Когда я в очереди"
 T.ANNOUNCE_ALWAYS                   = "Всегда"
 T.ANNOUNCE_NEVER                    = "Никогда"
+T.BG_ANNOUNCE_SAME_AS_QUEUE         = "Так же как и анонсы очереди"
 
 -- System messages option panel
 T.MENU_SYS_MESSAGES_TITLE           = "Системные сообщения"
