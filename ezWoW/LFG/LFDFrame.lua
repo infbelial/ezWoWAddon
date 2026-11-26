@@ -95,17 +95,14 @@ function LFDDungeonReadyPopup_Update()
 	
 		local LFDDungeonReadyDialog = LFDDungeonReadyDialog; --Make a local copy.
 		
-		if IsLFRDungeon(LFRProposal.dungeonId) then
-			local name2, _, _, _, _, _, _, _, _, texture2 = GetLFGDungeonInfo(LFRProposal.dungeonId)
-			name = name2
-			texture = texture2
-			typeID = 1
-		end
-
 		if ( typeID == TYPEID_RANDOM_DUNGEON ) then
 			LFDDungeonReadyDialog.background:SetTexture("Interface\\LFGFrame\\UI-LFG-BACKGROUND-RANDOMDUNGEON");
 			
-			LFDDungeonReadyDialog.label:SetText(RANDOM_DUNGEON_IS_READY);
+			if IsLFRDungeon(LFRProposal.dungeonId) then
+				LFDDungeonReadyDialog.label:SetText(RANDOM_RAID_IS_READY);
+			else
+				LFDDungeonReadyDialog.label:SetText(RANDOM_DUNGEON_IS_READY);
+			end
 			
 			LFDDungeonReadyDialog.instanceInfo:Hide();
 			
@@ -692,8 +689,6 @@ end
 tinsert(UnitPopupMenus["RAID_PLAYER"], 9, "VOTE_TO_KICK")
 
 ezWoW:RegisterHandler("LFR_CONFIG", function(config)
-	-- FIXME
-	config = { 4999 }
 	for key, _ in pairs(enabledDungeons) do
 		enabledDungeons[key] = false
 	end

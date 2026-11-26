@@ -3,6 +3,8 @@ if GetLocale() == "ruRU" then
     return
 end
 
+RANDOM_RAID_IS_READY = "Your Random Raid group is ready!";
+
 EZTEXT_DUNGEON_FINDER   = "Dungeon finder"
 EZTEXT_RAID_FINDER      = "Raid finder"
 

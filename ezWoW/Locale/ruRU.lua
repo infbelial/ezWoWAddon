@@ -1,3 +1,5 @@
+RANDOM_RAID_IS_READY    = "Группа для прохождения случайного рейда набрана!";
+
 EZTEXT_DUNGEON_FINDER   = "Поиск подземелий"
 EZTEXT_RAID_FINDER      = "Поиск рейда"
 
