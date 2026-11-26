@@ -51,6 +51,9 @@ function EzWoWAccountOptionsFrame_UpdateUI()
     for _, dropDown in pairs(self.dropDowns) do
         local value = tonumber(ezWoW.options[dropDown.optionKey].value)
         dropDown.clientValue = value
+        if dropDown.initialize then
+            UIDropDownMenu_Initialize(dropDown, dropDown.initialize)
+        end
         UIDropDownMenu_SetSelectedValue(dropDown, value, false)
     end
 
