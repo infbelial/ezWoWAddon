@@ -14,9 +14,7 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentText" inherits="GameFontNormal">
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT">
-							<Offset x="0" y="1"/>
-						</Anchor>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="1"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -28,11 +26,7 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentText" inherits="GameFontHighlightSmall">
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="0" y="1"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="1"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -53,11 +47,6 @@
 						<Anchor point="TOPLEFT" x="10" y="-7"/>
 					</Anchors>
 				</FontString>
-				<!--FontString name="$parentEnd" justifyH="LEFT" inherits="GameFontHighlight">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="10" y="-22"/>
-					</Anchors>
-				</FontString-->
 			</Layer>
 		</Layers>
 	</Frame>
@@ -207,9 +196,7 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset x="16" y="-16"/>
-						</Anchor>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
@@ -268,28 +255,14 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="16" y="-16"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="4" justifyH="LEFT" justifyV="TOP">
-					<Size>
-						<AbsDimension y="60" x="0"/>
-					</Size>
+					<Size y="60" x="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
-							<Offset>
-								<AbsDimension x="0" y="-8"/>
-							</Offset>
-						</Anchor>
-						<Anchor point="RIGHT">
-							<Offset>
-								<AbsDimension x="-32" y="0"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" x="0" y="-8"/>
+						<Anchor point="RIGHT" x="-32" y="0"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -339,28 +312,14 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="16" y="-16"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
-					<Size>
-						<AbsDimension y="32" x="0"/>
-					</Size>
+					<Size y="32" x="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
-							<Offset>
-								<AbsDimension x="0" y="-8"/>
-							</Offset>
-						</Anchor>
-						<Anchor point="RIGHT">
-							<Offset>
-								<AbsDimension x="-32" y="0"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" x="0" y="-8"/>
+						<Anchor point="RIGHT" x="-32" y="0"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -374,9 +333,7 @@
 					<Layer level="BACKGROUND">
 						<FontString name="$parentLabel" inherits="GameFontNormal">
 							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-									<Offset x="21" y="0"/>
-								</Anchor>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="21" y="0"/>
 							</Anchors>
 						</FontString>
 					</Layer>
@@ -485,28 +442,14 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="16" y="-16"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
-					<Size>
-						<AbsDimension y="32" x="0"/>
-					</Size>
+					<Size y="32" x="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
-							<Offset>
-								<AbsDimension x="0" y="-8"/>
-							</Offset>
-						</Anchor>
-						<Anchor point="RIGHT">
-							<Offset>
-								<AbsDimension x="-32" y="0"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" x="0" y="-8"/>
+						<Anchor point="RIGHT" x="-32" y="0"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -544,9 +487,7 @@
 					<Layer level="BACKGROUND">
 						<FontString name="$parentLabel" inherits="GameFontNormal">
 							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-									<Offset x="21" y="0"/>
-								</Anchor>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="21" y="0"/>
 							</Anchors>
 						</FontString>
 					</Layer>
@@ -567,9 +508,7 @@
 					<Layer level="BACKGROUND">
 						<FontString name="$parentLabel" inherits="GameFontNormal">
 							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-									<Offset x="21" y="0"/>
-								</Anchor>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="21" y="0"/>
 							</Anchors>
 						</FontString>
 					</Layer>
@@ -594,28 +533,14 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="16" y="-16"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
-					<Size>
-						<AbsDimension y="32" x="0"/>
-					</Size>
+					<Size y="32" x="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
-							<Offset>
-								<AbsDimension x="0" y="-8"/>
-							</Offset>
-						</Anchor>
-						<Anchor point="RIGHT">
-							<Offset>
-								<AbsDimension x="-32" y="0"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" x="0" y="-8"/>
+						<Anchor point="RIGHT" x="-32" y="0"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -697,28 +622,14 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="16" y="-16"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
-					<Size>
-						<AbsDimension y="32" x="0"/>
-					</Size>
+					<Size y="32" x="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
-							<Offset>
-								<AbsDimension x="0" y="-8"/>
-							</Offset>
-						</Anchor>
-						<Anchor point="RIGHT">
-							<Offset>
-								<AbsDimension x="-32" y="0"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" x="0" y="-8"/>
+						<Anchor point="RIGHT" x="-32" y="0"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -732,9 +643,7 @@
 					<Layer level="BACKGROUND">
 						<FontString name="$parentLabel" inherits="GameFontNormal">
 							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-									<Offset x="21" y="0"/>
-								</Anchor>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="21" y="0"/>
 							</Anchors>
 						</FontString>
 					</Layer>
@@ -776,9 +685,7 @@
 					<Layer level="BACKGROUND">
 						<FontString name="$parentLabel" inherits="GameFontNormal">
 							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-									<Offset x="21" y="0"/>
-								</Anchor>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="21" y="0"/>
 							</Anchors>
 						</FontString>
 					</Layer>
@@ -799,9 +706,7 @@
 					<Layer level="BACKGROUND">
 						<FontString name="$parentLabel" inherits="GameFontNormal">
 							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-									<Offset x="21" y="0"/>
-								</Anchor>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="21" y="0"/>
 							</Anchors>
 						</FontString>
 					</Layer>
@@ -822,9 +727,7 @@
 					<Layer level="BACKGROUND">
 						<FontString name="$parentLabel" inherits="GameFontNormal">
 							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-									<Offset x="21" y="0"/>
-								</Anchor>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="21" y="0"/>
 							</Anchors>
 						</FontString>
 					</Layer>
@@ -857,28 +760,14 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentTitle" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="16" y="-16"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
 					</Anchors>
 				</FontString>
 				<FontString name="$parentSubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
-					<Size>
-						<AbsDimension y="32" x="0"/>
-					</Size>
+					<Size y="32" x="0"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
-							<Offset>
-								<AbsDimension x="0" y="-8"/>
-							</Offset>
-						</Anchor>
-						<Anchor point="RIGHT">
-							<Offset>
-								<AbsDimension x="-32" y="0"/>
-							</Offset>
-						</Anchor>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" x="0" y="-8"/>
+						<Anchor point="RIGHT" x="-32" y="0"/>
 					</Anchors>
 				</FontString>
 			</Layer>
